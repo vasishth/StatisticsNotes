@@ -1,0 +1,4080 @@
+# Types of expt designs
+
+## Parallel Group Designs
+
+To compare k treatments,
+divide patients, at random, into k groups,
+the $n_i$ patients in group $i$ receive treatment $i$. Each patient receives just one treatment. Comparisons are between patients. 
+$n_i$ not necessarily the same across groups.
+
+## In Series Designs
+Each patient receives all k treatments in the same order. 
+Comparisons made within patients.
+
+Problems: 
+Patients enter when disease is bad, hence likely to improvement regardless of treatment, so later treatments appear better.
+Reverse occurs for a progressive disease, i.e. problems occur if underlying disease is not stable.
+
+Advantages
+\begin{enumerate}
+\item Need fewer patients than parallel designs
+\item Patients can state `preferences' between treatments
+\item  Might be able to allocate treatments simultaneously e.g. skin cream on left and right hands
+\end{enumerate}
+
+Disadvantages
+
+\begin{enumerate}
+\item
+ Treatment effect might depend on when it is given
+\item Treatment effect may persist into subsequent periods
+and mask/modify effects of later treatments
+\item Withdrawals cause problems (i.e. if a patient leaves
+before trying all treatments)
+\item Not universally applicable, e.g. drug treatment
+compared with surgery
+\item Can only use for short term effects
+\end{enumerate}
+
+## Crossover trials
+
+Period, Treatment and Period:Treatment (Carrover) effects
+
+\begin{enumerate}
+\item
+All patients get all treatments but in different orders.
+\item
+Period and Carryover effects are nuisance variables, the main interest is in Treatment effects.
+\end{enumerate}
+
+
+## Factorial designs
+
+**Interactions**:
+
+(a) quantitative interaction: what we call additive.
+(b) qualitative interaction: what we call cross-over interaction.
+
+## Sequential designs
+
+to-do: need to look this up.
+
+ Advantages
+ 
+\begin{enumerate}
+\item
+ Detect large differences quickly
+\item 
+Avoids ethical problem of fixed size designs (no patient
+should receive treatment known to be inferior)
+\end{enumerate}
+
+Disadvantages
+\begin{enumerate}
+\item
+ Responses needed quickly (before next pair arrive) 
+\item
+Drop-outs cause difficulties
+\item 
+Constant surveillance necessary
+\item Requires pairing of patients
+\item Calculation of boundaries highly complex
+\end{enumerate}
+
+# Per protocol vs intention to treat analyses
+
+Per protocol: only analyze patients who conform to original protocol
+
+Intention to treat: analyze all data, including dropouts etc. (This has lower risk of bias).
+
+# Randomization
+
+Randomization protects against accidental and selection bias, and provides a basis for statistical tests
+
+Types of randomization include
+
+\begin{enumerate}
+\item
+simple (but may be unbalanced over treatments) 
+\item
+blocked (but small blocks may be decoded) 
+\item 
+stratified (but may require small blocks) 
+\item 
+minimization (but lessens randomness)
+\end{enumerate}
+
+# Sample size calculations
+
+## Two sample
+
+\paragraph{Binomial}
+
+**Note: n is each arm**
+
+\begin{equation}
+n \approx \frac{\theta_1(1-\theta_1) + \theta_2(1-\theta_2)}{(\theta_2-\theta_1)^2}[\Phi^{-1}(\beta) +  \Phi(\alpha/2)]^2
+\end{equation}
+
+\paragraph{Continuous}
+
+**Note: n is each arm**
+
+\begin{equation}
+n \approx \frac{2\sigma^2}{(\mu_1-\mu_2)^2}[\Phi^{-1}(\beta) +  \Phi(\alpha/2)]^2
+\end{equation}
+
+## One sample
+
+\paragraph{Binomial}
+
+\begin{equation}
+n \approx 
+\frac{[\Phi^{-1}(\beta)
+\sqrt{\theta(1-\theta)} +
+\Phi^{-1}(\alpha/2)
+\sqrt{\theta_0(1-\theta_0)} 
+]^2}{(\theta-\theta_0)^2}
+\end{equation}
+
+
+\paragraph{Continuous}
+
+\begin{equation}
+n \approx \frac{\sigma^2}{(\mu-\mu_0)^2}
+[\Phi^{-1}(\beta)+\Phi^{-1}(\alpha/2)]^2
+\end{equation}
+
+## Computation for patients lost during testing
+
+Let t be target, p be percent of loss, n the final recruitment number.
+
+\begin{equation}
+t - \frac{p}{100}t = n
+\end{equation}
+
+# Multiple testing
+
+If we do k indep tests, and compute p-values at $\alpha=0.05$ then actual p-value is $k\times p$. 
+
+Corrections:
+\begin{enumerate}
+\item Bonferroni
+\item choose primary outcome measure **in advance**
+\item multivariate analysis
+\end{enumerate}
+
+Sequential testing: see p.\ 71.
+
+# Combining trials (meta-analysis)
+
+## Mantel-Haenszel test
+
+Assume a data format as follows:
+
+\begin{tabular}{c|ccc}
+        & \multicolumn{2}{c}{heart problems}                & \\
+        \hline
+glucose:        & yes  & no        & Total\\  
+elevated & $Y_1$ & $n_1 - Y_1$ & $n_1$ \\
+not elevated&  $Y_2$ & $n_2 - Y_2$ & $n_2$ \\
+\hline
+Total   & $t$      & $n-t$ & $n$\\ 
+\end{tabular}
+
+For each study we can compute the mean and variance using the formulas from the lecture notes:
+
+\begin{equation}
+E[Y]_1=\frac{n_1 t}{n} \quad Var(Y_1) = \frac{n_1 n_2 t(n-t)}{n^2(n-1)}
+\end{equation}
+
+Then 
+
+\begin{equation}
+T_{MH} = \frac{(Y_1 - E[Y_1])^2}{V(Y_1)}\sim \chi_1^2
+\end{equation}
+
+**Combining trials for meta-analysis**:
+
+For j studies, compute
+
+\begin{equation}
+W=\sum Y_{1j} \quad E[W] = \sum E[Y_{1j}] \quad V(W) = \sum V(Y_{1j})
+\end{equation}
+
+and test:
+
+\begin{equation}
+\frac{(W-E[W])^2}{V(W)} \sim \chi_1^2
+\end{equation}
+
+**When is this appropriate?**
+
+This summing up procedure avoids Simpson's paradox (combining studies can give different results than separate analyses, due (inter alia) to sample size differences), but not sure why. 
+
+Some notes on MH test:
+
+\begin{enumerate}
+\item This test is appropriate when treatment differences are consistent across tables.
+\item Logistic regression gives you the same results.
+\item ``The Mantel-Haenszel test is simpler if one has just two qualitative prognos- tic factors to adjust for and wishes only to assess significance, not magnitude, of a treatment difference.'' (p.\ 97)
+\item
+``The logistic approach is more general and can include other covariates, further, it can test whether treatment differ- ences are consistent across tables.'' (p.\ 97)
+\item If treatments across trials is inconsistent or if success rates differ markedly.
+\item Logistic regression can solve Simpson's paradox because we can include trial effect.
+\end{enumerate}
+
+
+
+# Binary data: RR, OR, and logistic regression
+
+## Prospective studies: Relative Risk
+
+\begin{tabular}{cccc}
+        & positive  & negative & total\\
+Exposed & a  & b  & a+b\\
+Not Exp & c  & d  & c+d\\
+\end{tabular}
+
+Then, Relative Risk is
+
+\begin{equation}
+\begin{split}
+~& RR = \frac{a/(a+b)}{(c/(c+d))} \\
+~& \Rightarrow \hbox{ compute } log(RR) \\
+\end{split}
+\end{equation}
+
+The log-transform is for computing CIs using the normal approximation:
+
+\begin{equation}
+\begin{split}
+SE(log(RR)) =& \sqrt{\frac{1}{a} - \frac{1}{a+b} + \frac{1}{c} - \frac{1}{c+d}} \\
+\Rightarrow& log(RR) \pm 2 SE(log(RR))
+\end{split}
+\end{equation}
+
+Then exponentiate the interval bounds to get intervals on odds.
+
+## Retrospective studies: Odds ratios
+
+\begin{tabular}{ccc}
+        & Observed cases  & Obs.\ controls \\
+Exposed & a  & b\\
+Not Exp & c  & d\\
+\end{tabular}
+
+Then, the Odds Ratio is:
+
+\begin{equation}
+OR = \frac{a/c}{b/d}= \frac{ad}{bc} \Rightarrow log(OR)
+\end{equation}
+
+\begin{equation}
+SE(log(OR)) = 
+\sqrt{\frac{1}{a}+\frac{1}{b}+\frac{1}{c}+\frac{1}{a}}
+\end{equation}
+
+Compute CIs on log odds, and then exponentiate to get back to odds space.
+
+## Paired data: McNemar's test
+
+x= no of mismatched pairs (pairs of 0,1 or pairs of 1,0 cases)
+
+n= total no of mismatched pairs
+
+Suppose we have 15 mismatched pairs, of which 3 are 0,1. Then 
+the p-value is 
+$2\times P(X\leq 3)$ using binomial distribution:
+$2 \sum_{x=0}^3 {15 \choose x} (\frac{1}{2})^{15}$.
+
+For large n, $\frac{(n_{01}-n_{10})^2}{n_{01}+n_{10}} \sim \chi_1^2$.
+
+## Logistic regression
+
+See GLM notes.
+
+# Crossover trials
+
+The response is $Y_{ijk}$ with group (reflecting order) i=1,2; period j=1,2; and patient k=1,2,\dots, 8 in group 1, and k=9,\dots,21 for group 2. Let between patient differences be $\alpha_k \sim N(0,\phi^2)$ and let $\epsilon_{ijk}\sim N(0,\sigma^2)$.
+
+\begin{tabular}{ccl}
+group 1 & per 1 & $Y_{11k}= \mu + \alpha_k + \tau_A + \pi_1 + \epsilon_{11k}$ \\
+ & per 2& $Y_{12k} = \mu + \alpha_k + \tau_B + \pi_2 + \lambda_A+ \epsilon_{12k}$ \\
+group 2 & per 1 & $Y_{21k} = \mu + \alpha_k + \tau_B +  \pi_1 + \epsilon_{21k}$ \\
+& per 2 & $Y_{22k} = \mu + \alpha_k + \tau_A + \pi_2 + \lambda_B+ \epsilon_{22k}$\\
+\end{tabular}
+
+## Testing for carryover effects
+
+Define the average of group 1 and 2 measurements $T_{1k}$ and $T_{2k}$:
+
+\begin{equation}
+\begin{split}
+T_{1k}=& \frac{1}{2} (Y_{11k}+Y_{21k})\\
+      =& \frac{1}{2} (2\mu + \lambda_A + \tau_A+\tau_B + \pi_1 + \pi_2)
+\end{split}
+\end{equation}
+
+If we constrain $\tau_A+\tau_B=0$, and $\pi_1+\pi_2=0$, the expectation of the above becomes:
+
+\begin{equation}
+E[T_{1k}] = \mu+ \frac{1}{2}\lambda_A
+\end{equation}
+
+Similarly, 
+\begin{equation}
+E[T_{2k}] = \mu+ \frac{1}{2}\lambda_B
+\end{equation}
+
+The variances can be computed as follows:
+
+\begin{equation}
+\begin{split}
+Var(T_{1k})=& Var(\frac{1}{2} (Y_{11k}+Y_{21k}))\\
+=& \frac{1}{4} (Var(Y_{11k}) + Var(Y_{21k})) \\
++& 2\frac{1}{4}Cov(Y_{11k},Y_{21k})\\
+=& \frac{1}{4} (\phi^2 +  \sigma^2 + \phi^2 +  \sigma^2) + \frac{1}{2} \phi^2\\
+=& \phi^2 + \frac{1}{2}\sigma^2
+\end{split}
+\end{equation}
+
+[This comes from $Var(aX+bY)=a^2 Var(X)+b^2Var(Y)+2ab Cov(XY)$.]
+
+So, $T_1k \sim N(\mu+\frac{1}{2}\lambda_A,\phi + \frac{1}{2}\sigma^2)$, and similarly, $T_2k \sim N(\mu+\frac{1}{2}\lambda_B,\phi + \frac{1}{2}\sigma^2)$. 
+
+Doing a two-sample t-test comparing $\bar{T}_1, \bar{T}_2$ amounts to determining the carryover effect:
+
+\begin{equation}
+\frac{\bar{T}_1-\bar{T}_2}{\sqrt{s_{\bar{T}_1}^2/n_1 + s_{\bar{T}_2}^2/n_2}} \sim t_{min(n_1,n_2)}
+\end{equation}
+
+\underline{Using sums}:
+alternatively: let sum of each group be $S_1$ and $S_2$, and the sd of the respective sum be sd1, sd2.
+
+\begin{equation}
+\frac{S_1 - S_2}{\sqrt{sd1^2/n_1 + sd2^2/n_2}}
+\end{equation}
+
+
+## Testing for treatment effects
+
+This is a within patients comparison:
+\begin{equation}
+D_{ik} = Y_{i1k}-Y_{i2k} 
+\end{equation}
+
+For group i=1:
+
+\begin{equation}
+\begin{split}
+D_{1k} =& Y_{11k} -  Y_{12k}\\
+=& \tau_A-\tau_B + \pi_1-\pi_2 
+\end{split}
+\end{equation}
+
+\begin{equation}
+D_{1k} \sim N(\tau_A-\tau_B+\pi_1-\pi_2,2\sigma^2)
+\end{equation}
+
+
+For group i=2:
+
+\begin{equation}
+\begin{split}
+D_{2k} =& Y_{21k} -  Y_{22k}\\
+=& \tau_B-\tau_A + \pi_1-\pi_2 
+\end{split}
+\end{equation}
+
+So:
+
+\begin{equation}
+D_{2k} \sim N(\tau_B-\tau_A+\pi_1-\pi_2,2\sigma^2)
+\end{equation}
+
+
+If we do $D_{1k}-D_{2k}$ we get 
+
+\begin{equation}
+\tau_A-\tau_B+\pi_1-\pi_2 - (\tau_B-\tau_A+\pi_1-\pi_2)=
+2 \tau_A -2\tau_B = \tau_A-\tau_B
+\end{equation}
+
+So the null hypothesis being tested is $\tau_A=\tau_B$.
+
+The test is:
+
+\begin{equation}
+\frac{\bar{D}_1 - \bar{D}_2}{
+\sqrt{s_{\bar{D}_1}^2/n_1 + 
+s_{\bar{D}_2}^2/n_2}} \sim t_r
+\end{equation}
+
+## Testing for period effects
+
+If period effect is identical, then $\bar{D}_1$ (group 1 effect), and $-\bar{D}_2$ will have identical distributions.
+
+If we do $D_{1k}- (-D_{2k})$ we get 
+
+\begin{equation}
+\begin{split}
+~& \tau_A-\tau_B+\pi_1-\pi_2 - (-(\tau_B-\tau_A+\pi_1-\pi_2))=\\
+~& \tau_A-\tau_B+\pi_1-\pi_2 + (\tau_B-\tau_A+\pi_1-\pi_2))\\
+=&  \pi_1-\pi_2 +\pi_1-\pi_2 \\
+=& 2\pi_1 - 2\pi_2\\
+=& \pi_1 - \pi_2\\
+\end{split}
+\end{equation}
+
+So the null hypothesis being tested is $\pi_1=\pi_2$. The test statistic is:
+
+\begin{equation}
+\frac{\bar{D}_1 - (-\bar{D}_2)}{\sqrt{
+s_{\bar{D}_1}^2/n_1 + 
+s_{\bar{D}_2}^2/n_2
+}} \sim t_r
+\end{equation}
+
+**Interpretation**
+
+\begin{enumerate}
+\item Check for treatment and period effects only if carrover effect not present.
+\item If carryover effect is present, then only analyze first period. Should have used a longer washout period.
+\end{enumerate}
+
+## Carryover effects binary responses: Mainland-Gart test
+
+Mainland-Gart test: p.\ 90
+
+\begin{enumerate}
+\item Count how many cases in group 1 had better outcome in first period (for first period trtmt).
+\item Count how many cases in group 2 had better outcome in second period (for the same trmt as in group 1).
+\item Make contingency table and do chi-sq test.
+\end{enumerate}
+
+
+Example:
+
+\underline{Observed}:
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+sequence & first period & second period & total\\
+\hline
+A$\rightarrow$ B & 9 & 0 & 9\\
+B$\rightarrow$ A & 1 & 6 & 7\\
+\hline
+total & 10 & 6 & 16\\
+\hline
+\end{tabular}
+
+Compute $X^2 = \frac{\sum (o-e)^2}{e}$, where 
+e = (row sum $\times$ col sums)/total.
+
+\underline{Expected}:
+
+\begin{tabular}{|c|c|c|}
+\hline
+sequence & first period & second period \\
+\hline
+A$\rightarrow$ B & $\frac{9\times 10}{16}$ &  $\frac{9\times 6}{16}$\\
+B$\rightarrow$ A & $\frac{7\times 10}{16}$ & $\frac{7\times 6}{16}$ \\
+\hline
+\end{tabular}
+
+
+
+\begin{equation}
+X^2 = \frac{(9 - \frac{9\times 10}{16})^2}{\frac{9\times 10}{16}} + 
+\frac{(0 - \frac{9\times 6}{16})^2}{\frac{9\times 6}{16}} + 
+\frac{(1-\frac{7\times 10}{16})^2}{\frac{7\times 10}{16}} + \frac{(6-\frac{7\times 6}{16})^2}{\frac{7\times 6}{16}}
+\end{equation}
+
+<<>>=
+(9-(9*10/16))^2/(9*10/16) + 
+  (0-(9*6/16))^2/(9*6/16) + 
+  (1-(7*10/16))^2/(7*10/16) + 
+  (6-(7*6/16))^2/(7*6/16)
+
+1-pchisq(12.34,df=1)
+@
+
+# Randomization
+
+Historical/database controls: use previous data as control and assign all patients to treatment. As a compromise, one could have a small number of controls to compare with historical controls.
+
+
+
+**Unequal allocation** (4.3.2)
+
+May decide we need most information on B to get more accurate estimates of the B effect; variation A is probably known reasonably well already if it is the standard.
+
+**Stratified randomization**: Suppose we have patients in different age ranges and either M or F. Then find all possible combinations of each level, and then produce separate randomization lists for each level.
+
+Adaptive randomization/minimization:
+to-do
+
+# Kappa statistic
+
+\begin{equation}
+\kappa = \frac{A_{obs}-A_{exp}}{1-A_{exp}}
+\end{equation}
+
+Conventional scale:
+
+\begin{enumerate}
+\item $\kappa > 0.75$ excellent agrmt
+\item $0.4 < \kappa <0.75$ fair to good agrmt
+\item $<0.4$ moderate to poor agrmt
+\end{enumerate}
+
+The $A_{obs}$ is the sum of the diagonals.
+
+The $A_{exp}$ is the (row sums*col sums)/(grand total), calculated only for the diagonals.
+
+
+# Survival analysis
+
+\begin{verbatim}
+                   right censoring:
+t0 ----------o t1   t0 ---------- c
+start       dead    start       lost
+\end{verbatim}
+
+Survival time $t\geq 0$. Define a random variable $T\sim f(x)$ where the cdf is 
+
+\begin{equation}
+F(x) = P(T < t) = \int_0^t f(u)\, du
+\end{equation}
+
+The probability that survival is $\geq$ t is 
+
+\begin{equation}\label{eq:probsurvival}
+S(t)= 1- F(t)=P(T\geq t)
+\end{equation}
+
+**Hazard function**: Consider 
+$P(t \leq T < t+\delta t\mid T \geq t)$. Divide by $\delta t$ to get probability *per unit time* = rate. 
+
+
+
+**Hazard rate definition**:
+
+\begin{equation}
+h(t) =  \lim_{\delta t \to 0} \left\{ 
+\frac{P(t \leq T < t+\delta t \mid T \geq t)}{\delta t} \right\}
+\end{equation}
+
+
+
+If we rearrange terms, we get:
+
+\begin{equation}
+h(t) \delta t =  \lim_{\delta t \to 0} \left\{ P(t\leq T < t+\delta t \mid T \geq t) \right\}
+\end{equation}
+
+This is the probability of dying during $t+\delta t$; or the risk of death *at time t*.
+
+Focusing on the right-hand side $P(t\leq T < t+\delta t \mid T \geq t)$, we can use the conditional probability rule to determine that:
+
+\begin{equation}
+\begin{split}
+ P(t\leq T < t+\delta t \mid T \geq t) =& 
+ \frac{P(t\leq T < t+\delta t)}{P(T\geq t)}\\
+ =& \frac{F(t+\delta t)-F(t)}{P(T\geq t)}
+ \end{split}
+ \end{equation}
+
+From equation~\ref{eq:probsurvival} we know that  $P(T\geq t)=S(t)$. So we can restate $h(t)$ as:
+
+\begin{equation}
+h(t) =  \lim_{\delta t \to 0} \left\{ 
+\frac{F(t+\delta t)-F(t)}{\delta t} \frac{1}{S(t)} \right\}
+\end{equation}
+
+Now, 
+
+\begin{equation}
+\lim_{\delta t \to 0} \left\{ 
+\frac{F(t+\delta t)-F(t)}{\delta t} \right\} 
+= \frac{d(F(t))}{dt} = f(t)
+\end{equation}
+
+Therefore: 
+
+\begin{equation}
+\boxed{h(t) = \frac{f(t)}{S(t)}}
+\end{equation}
+
+Now, 
+
+\begin{equation}
+\frac{d(\log(S(t)))}{dt} = -\frac{f(t)}{S(t)}
+\end{equation}
+
+\begin{leftbar}
+This is because 
+
+\begin{equation}
+S(t)=1-F(t) = 1 - \int_0^t f(t)\, dt)
+\end{equation}
+
+Taking logs:
+
+\begin{equation}
+\log S(t)= \log(1-F(t))=\log(1 - \int_0^t f(t)\, dt)
+\end{equation}
+
+If we now take the derivative of $\log S(t)$ with respect to $t$:
+
+\begin{equation}
+\frac{d(\log S(t))}{dt}= \frac{d(\log(1-F(t)))}{dt}=\frac{d(\log(1 - \int_0^t f(t)\, dt))}{dt}
+\end{equation}
+
+We use the chain rule to solve this derivative: Let $u=1 - \int_0^t f(t)\, dt=S(t)$. We can write:
+
+\begin{equation}
+\frac{d(\log(1 - \int_0^t f(t)\, dt))}{dt}=
+\frac{d(\log(u))}{dt}
+\end{equation}
+
+Now, $\frac{du}{dt}= -f(t)$; also, $\frac{d(\log u)}{du}= \frac{1}{u}=\frac{1}{S(t)}$. So, by the chain rule:
+
+\begin{equation}
+\frac{d(\log u)}{du} \frac{du}{dt} = \frac{d(\log u)}{dt} = -\frac{f(t)}{S(t)}
+\end{equation}
+\end{leftbar}
+
+Therefore:
+
+\begin{equation}
+h(t)= \frac{f(t)}{S(t)}= -\frac{d(\log(S(t)))}{dt} 
+\end{equation}
+
+The cumulative distribution function H(t):
+
+\begin{equation}
+H(t) = \int_0^t h(u) \, du = - \log (S(t))
+\end{equation}
+
+Since $\log (S(t)) = - H(t)$, if we take exponents on both sides:
+
+\begin{equation}
+\boxed{S(t) = \exp(-H(t))}
+\end{equation}
+
+Since $f(t) = h(t) S(t)$, replacing S(t), we get:
+
+\begin{equation}
+\boxed{f(t) = h(t)S(t)=h(t)\exp(-H(t))}
+\end{equation}
+
+In summary, for any random variable T, we will define, f(t), S(t), and h(t). 
+
+\begin{center}
+$\begin{tabu}{lll}
+     & Exponential  & Weibull \\
+     \hline
+f(t) & \lambda \exp(-\lambda t)  & \lambda \gamma t^{\gamma -1 } \exp(-\lambda t^{\gamma})\\
+S(t) & \exp(-\lambda t)  & \exp(-\lambda t^\gamma) \\
+h(t) & \lambda  &  \lambda \gamma t^{\gamma-1}\\
+& & Alternative: \lambda \gamma (\lambda t)^{\gamma -1}= 
+\lambda^\gamma \gamma t^{\gamma -1}\\ 
+\end{tabu}$
+\end{center}
+
+In Weibull, if $\gamma>1$ hazard is increasing, and if $\gamma<1$ hazard is decreasing. If $\gamma=1$, then the Weibull reduces to the exponential.
+
+## Important application of the survival equations (Task 5)
+
+Reviewing the equations:
+
+\begin{enumerate}
+\item Survival function:
+
+\begin{equation}
+S(t) = 1- F(t) \Rightarrow F(t) = 1 - S(t)
+\end{equation}
+
+Also, since $F'(t)=f(t)$, it follows that $f(t)=-S'(t)$.
+
+\item Hazard function:
+
+\begin{equation}
+h(t) = \frac{f(t)}{S(t)} \Rightarrow h(t) = \frac{-S'(t)}{S(t)} 
+\end{equation}
+
+\item CDF of the Hazard function:
+
+\begin{equation}
+H(t) = \int_0^t h(u)\, du = - \log(S(t))
+\end{equation}
+
+\end{enumerate}
+
+Suppose that the survivor function for a individual with covariate x satisfies:
+
+\begin{equation}
+S(t;x) = S_0(t\exp(-\beta^T x))
+\end{equation}
+
+where $S_0$ is some baseline survivor function.
+
+Show that the corresponding hazard function satisfies:
+
+$$h(t;x)=\exp(-\beta^T x) h_0 (t\exp(-\beta^T x)$$
+
+**Solution**:
+
+**Step 1**:
+
+The hazard function is:
+
+\begin{equation}
+h(t) = \frac{f(t)}{S(t)} \Rightarrow h(t) = \frac{-S'(t)}{S(t)} 
+\end{equation}
+
+Find the derivative S'(t) and plug the derivative and the expansion of S(t) into this hazard function equation.
+
+$$S'(t) = \exp(-\beta^Tx S_0'(t \exp(-\beta^Tx)$$
+
+\begin{equation}
+h(t) = \frac{f(t)}{S(t)} \Rightarrow h(t) = \frac{-S'(t)}{S(t)} = -\frac{\exp(-\beta^Tx S_0'(t \exp(-\beta^Tx)}{S_0(t\exp(-\beta^T x))}
+\end{equation}
+
+
+**Step 2**:
+Notice that the baseline hazard $h_0(t)$  is:
+
+\begin{equation}
+h_0(t) = \frac{f(t)}{S_0(t)} \Rightarrow h(t) = \frac{-S_0'(t)}{S_0(t)} 
+\end{equation}
+
+which is what we have above.
+
+**Step 3**: Plug in $h_0(t)$:
+
+\begin{equation}
+h(t)= -\frac{\exp(-\beta^Tx S_0'(t \exp(-\beta^Tx)}{S_0(t\exp(-\beta^T x))} =
+\exp(-\beta^Tx h_0(t)
+\end{equation}
+
+
+## Life tables: to-do
+
+
+## Kaplan-Meier product estimates of S(t)
+
+
+
+Here, we estimate the survival distribution without making any assumptions. The estimator is a **non-parametric MLE**.
+
+\begin{enumerate}
+\item
+k: number of failures
+\item
+$t_1,\dots,t_k$ unique event times (ordered)
+\item 
+$d_i$: deaths at $t_i$ 
+\item
+$n_i$: number at risk (still alive) at $t_i$
+\end{enumerate}
+
+\begin{equation}
+\hat S(t) = \prod_{i: t_i < t} (1-\frac{d_i}{n_i})=\prod_{i: t_i < t} (n_i - \frac{d_i}{n_i})
+\end{equation}
+
+\begin{equation}
+\hat H(t) = - \log \hat S(t)
+\end{equation}
+
+\underline{With censoring}:
+
+\begin{enumerate}
+\item
+$j$ is the time index: $j=1,\dots,k$, i.e.,  $t_1, \dots, t_k$. 
+\item 
+$d_j$ is the failure at time index $j$.
+\item 
+$n$ is total number of observations 
+\item
+$I_j$: number of individuals censored during $t_{j-1} < t < t_j$.
+\item 
+$r_j$ is the number at risk (the number alive) just before time $t_j$.
+%, so that $r_{j+1} = r_j - d_j$.   
+\item
+Note that $r_1 = n - I_1$.
+\item
+For $j\geq 2, r_j = r_j - d_j - I_{j+1} = n- (d_1 + \dots + d_{j-i}) - (I_1 + \dots + I_j)$.
+\end{enumerate}
+
+\begin{equation}
+\hat S(t) = \prod_{j=1}^{s} (1-\frac{d_j}{r_j}) \hbox{ for } 
+t_{(s)}<t<t_{(s+1)}
+\end{equation}
+
+**Note**: 
+
+\begin{enumerate}
+\item
+This assumes that $I_j$ censoring survive up to the preceding time period $t_{j-1}$ and then are removed immediately; this is different from life tables. 
+\item
+KM estimates are used when the intervals between events are quite short and the number of withdrawals in any interval is therefore quite small.
+\end{enumerate}
+
+
+Greenwood's variance formula:
+
+\begin{equation}
+Var(\hat S(t)) = (\hat S(t))^2 
+\sum_{j=1}^{s} \frac{d_j}{r_j (r_j - d_j)} 
+\hbox{ for } 
+t_{(s)}<t<t_{(s+1)}
+\end{equation}
+
+\begin{equation}
+\hat H(t) =\sum_{j=1}^{s} \frac{d_j}{r_j} 
+\hbox{ for } 
+t_{(s)}<t<t_{(s+1)}
+\end{equation}
+
+**Simple example from Harrell's Regression Modeling Strategies (p.\ 402)**
+
+Given failure times (+ denotes censoring): $1, 3, 3, 6^+, 8^+, 9, 10^+$.
+
+\begin{center}
+\begin{tabular}{ccccccrr}
+j & $t_i$ & $I_j$ &  $r_i$ & $d_i$ & $(r_i - d_i)/r_i$ & S(t) & interval \\
+0 & 0 & 0 &      &   &      &  1 &  $0\leq t< 1$\\
+1 & 1 & 0 & 7 & 1 & 6/7 & 6/7=0.85 & $1\leq t< 3$\\
+2 & 3 & 0  & 6 & 2 & 4/6 & $(6/7) \times (4/6)=0.57$ & $3\leq t< 9$\\
+3 & 9 & 2  & 2 & 1 & 1/2 & $(6/7) \times (4/6) \times (1/2)=0.29$ & $9\leq t< 10$ \\
+\end{tabular}
+\end{center}
+
+\underline{Variance calculation example}:
+
+For time j=1:  $0.85^2 (1/(7\times 6))=0.132^2$.
+
+95\% CI: 
+
+For time j=2:  $0.57^2 (1/(7\times 6) + 2/(6*4))=0.187^2$.
+
+
+
+In R:
+
+<<>>=
+library(survival)
+time<-c(1,3,3,6,8,9,10)
+censor<-c(1,1,1,0,0,1,0)
+df<-data.frame(time=time,censor=censor)
+harrell_sv<-with(df,Surv(time,censor,
+                         type="right"))
+harrell_sv
+harrell_fit<-survfit(harrell_sv~1,data=df)
+summary(harrell_fit)
+@
+
+\begin{figure}[H]
+\caption{Kaplan-Meier plot for Harrell example.}
+<<fig=TRUE>>=
+plot(harrell_fit)
+@
+\end{figure}
+
+Note that the estimate of $S(t)$ is undefined for $t>10$.
+
+**Example from lecture notes (p.\ 19)**:
+
+<<>>=
+library(survival)
+load("data/tumour.Rdata")
+## Note:
+## censor: 0=censored, 1=complete
+head(tumour)
+tumour_sv<-with(tumour,Surv(time,censor,
+                            type="right"))
+tumour_sv
+tumour_fit<-survfit(tumour_sv~1,data=tumour)
+summary(tumour_fit)
+@
+
+to-do? (not sure if needed): Computing CIs by hand. See Harrell.
+
+## Computing median survival using Kaplan-Meier interpolation
+
+Given survival probabilities and times, for example:
+
+\begin{verbatim}
+Time  Survival_Prob
+t1         s1
+t2         s2
+\end{verbatim}
+
+Then the median survival time x can be computed for solving for x (using linear interpolation):
+
+\begin{equation}
+\frac{s1-s2}{t2-t1} = \frac{0.5-s2}{t2-x}
+\end{equation}
+
+## R code: Representative examples
+
+The \texttt{survival} package has the following key functions:
+
+\begin{enumerate}
+\item \texttt{Surv}
+\item \texttt{survfit}
+\item \texttt{survreg}
+\item \texttt{survdiff} (log rank two sample test)
+\end{enumerate}
+
+The package \texttt{coin} does conditional tests (\texttt{surv\_test}): to-do. See ??survival for a reference to an excellent vignette by Hothorn and Everett.
+
+## Parametric models (single-sample data)
+
+Given non-negative failure times $T\sim f(t)$, cdf, $F(t)$, and $S(t)=1-F(t), h(t)=\frac{f(t)}{S(t)}$. The pdf $f(t)$ depends on some parameter $\theta$; we use MLE to estimate $\theta$ and get its variance and therefore get CIs for the parameter.
+
+\paragraph{Exponential}
+
+Recall that for the exponential distribution:
+
+\begin{equation}
+f(t) = \lambda \exp(-\lambda t) \quad S(t)=
+\exp(-\lambda t)  \quad h(t)=\lambda
+\end{equation}
+
+If the data are **uncensored**:
+
+\begin{equation}
+\hat \lambda = \frac{n}{\sum t} \quad 95\% CI: \left[\frac{\chi_{2n, 0.025}^2}{2\sum t}, 
+\frac{\chi_{2n, 0.975}^2}{2\sum t} \right]
+\end{equation}
+
+Also:
+
+\begin{equation}
+\hat S(t) = \exp(-\hat \lambda t)
+\end{equation}
+
+\begin{leftbar}
+How the above comes about:
+
+\begin{equation}
+L(\lambda; t_1, t_2, \dots, t_n) = \prod f(t_i) = \lambda^n e^{-\lambda}\sum t_i
+\end{equation}
+
+\begin{equation}
+\ell (\lambda) = n \log (\lambda) - \lambda \sum t_i \Rightarrow 
+\hat \lambda = \frac{n}{\sum t} 
+\end{equation}
+
+
+Confidence intervals: 
+
+Recall two facts: $Y = \sum T_i \sim Gamma(n,\lambda)$ and 
+$Z = 2 \lambda Y \sim \chi_{2n}^2$.
+
+$P(\chi_{2n, 0.025}^2 < 2\lambda \sum T_i < \chi_{2n, 0.975}^2=0.95$, and so a 95\% CI is 
+
+$\left[\frac{\chi_{2n, 0.025}^2}{2\sum t}, 
+\frac{\chi_{2n, 0.975}^2}{2\sum t} \right]$
+
+\end{leftbar}
+
+If the data are **censored**:
+
+There are two cases. We either have complete observations, in which case 
+
+$f(x)=\lambda \exp(-\lambda t)$
+
+Or we have censored observations, in which case 
+
+$f(x)= \exp(-\lambda c_i)$ (not sure why this is so)
+
+The above assume $c_i$ are fixed and are given for all individuals (i.e., non-random). I.e., for complete observations, we have $t_i\leq c_i$ and for the censored ones we have  $t_i> c_i$.
+
+To define the likelihood, we define a censoring indicator $\delta_i =1$ if we have a complete observation, and $\delta_i =0$ if censored. Then:
+
+\begin{equation}
+L(\lambda)= \prod [\exp(-\lambda t_i)]^{\delta_i} [\exp(-\lambda c_i )]^{1-\delta_i}
+\end{equation}
+
+taking the log likelihood:
+
+\begin{equation}
+\ell(\lambda)= \log \lambda  \sum\delta_i - \lambda\sum t_i \delta_i  - \lambda \sum (1-\delta_i) c_i
+\end{equation}
+
+Taking the derivative:
+
+\begin{equation}
+\frac{d\ell }{d\lambda} = \frac{\sum \delta_i}{\lambda} - \sum (t_i \delta_i + (1-\delta_i)c_i)
+\end{equation}
+
+This gives us
+
+\begin{equation}
+\hat \lambda = \frac{\sum \delta_i}{\sum (t_i \delta_i + (1-\delta_i)c_i)}
+\end{equation}
+
+Note that $\frac{d^2\ell}{d\lambda^2} =  - \frac{1}{\lambda^2} \sum \delta_i$, and therefore 
+
+$-\frac{d^2\ell}{d\lambda^2} =  \frac{1}{\lambda^2} \sum \delta_i$.
+
+We can use the asymptotic properties of MLEs to get:
+
+\begin{equation}
+\hat \lambda \xrightarrow{d} N(\lambda, I^{-1}) \quad I = E[-\frac{\delta^2 \ell}{\delta \lambda^2}] = E[\frac{1}{\lambda^2} \sum \delta_i]
+\end{equation}
+
+To find $E[-\frac{\delta^2 \ell}{\delta \lambda^2}]$ we have to find the expectation of $\sum \delta_i$. Now:
+
+\begin{equation}
+\begin{split}
+E[\delta_i] =& 1\times P(T_i < c_i) + 0 \times P(T>c_i) \\
+=& 1-\exp(-\hat \lambda c_i)  \\
+\end{split}
+\end{equation}
+
+It follows that $\sum \delta_i = \sum (1-\exp(-\hat \lambda c_i))$.
+
+Therefore:
+
+\begin{equation}
+Var(\hat \lambda) = I^{-1} = \frac{1}{E[-\frac{\delta^2 \ell}{\delta \lambda^2}]} =  \frac{\hat\lambda^2}{\sum (1- \exp(-\hat{\lambda}c_i))}
+\end{equation}
+
+Alternatively, we use the simpler formula:
+
+\begin{equation}
+Var(\hat \lambda) =\frac{\hat \lambda^2}{\sum \delta_i} \quad
+Var(\hat \mu)= var(\frac{1}{\hat \lambda}) = \frac{\hat \mu^2}{\sum_{i=1}^n \delta_i}
+\end{equation}
+
+**Estimating the mean**
+
+For the exponential, $\hat \mu = \frac{1}{\hat \lambda}$. 
+
+Next, we compute the variance.
+Recall: $Var(g(\hat \lambda)) = [g'(\lambda)^2 var(\lambda)]_{\lambda=\hat \lambda}$.
+
+\begin{equation}
+Var(\hat \mu)= var(\frac{1}{\hat \lambda}) = \frac{\hat \mu^2}{\sum (1-\exp(-\hat \lambda c_i))} \hbox{ or }
+\frac{\hat \mu^2}{\sum_{i=1}^n \delta_i}
+\end{equation}
+
+%[Is the above a mistake? Need to check this.]
+
+**Estimating the median**
+
+To estimate the median $S_{\alpha}$, note that there is some value $S_{\alpha}$ such that $\alpha = P(T\geq S_{\alpha}) = S(S_{\alpha}) = \exp(-\lambda S_{\alpha})$. 
+
+It follows that  **use $\log_e$**)
+\begin{equation}
+\begin{split}
+~& \alpha =  \exp(-\lambda S_{\alpha})\\
+\leftrightarrow & \log \alpha = -\lambda S_{\alpha}\\
+\therefore & S_{\alpha} = - \frac{\log \alpha}{\lambda}
+\end{split}
+\end{equation}
+ 
+
+
+
+\begin{equation}
+\begin{split}
+Var(S_{\alpha}) =& Var(- \frac{\log \alpha}{\lambda})  \\
+ =& (-\log \alpha)^2 Var(\frac{1}{\lambda})\\
+ =& (-\log \alpha)^2 \frac{\hat\mu^2}{\sum \delta_i}\\
+\end{split}
+\end{equation}
+
+\begin{leftbar}
+I didn't understand how we got the variance of $\hat\mu=1/\hat\lambda$ to be $\hat\mu^2/\sum \delta_i$.
+
+Since $\hat\mu = g(\hat\lambda) = 1/\hat\lambda$, 
+it follows that $g''(\lambda) = 1/\lambda^3$.
+
+So, $Var(g(\lambda))= g''(\lambda) var(\lambda) = (1/\lambda^3) (\lambda^2/\sum \delta_i ) =  (1/\lambda^3) (1/\sum \delta_i )= \mu/\sum \delta_i$ and not  $\mu^2/\sum \delta_i$.
+\end{leftbar}
+
+**Example**: Lung cancer data. See p.\ 24 for how to lay out data for hand-calculations.
+
+\underline{Step 1}: Estimate $\hat \lambda$. Since: 
+
+<<>>=
+load("data/lcancer.Rdata")
+head(lcancer)
+@
+
+First, compute estimate of $\lambda$:
+
+\begin{equation}
+\hat \lambda = \frac{\sum \delta_i}{\sum (t_i \delta_i + (1-\delta_i)c_i)}
+\end{equation}
+
+
+$\sum \delta_i=7$: number dead.
+
+$\sum \delta_it_i=155$: 
+
+<<>>=
+ sum(subset(lcancer,censor==1)$time)
+@
+
+$(1-\delta_i)c_i = 153$ is the total maximum survival time of the censored people.
+
+<<>>=
+sum(subset(lcancer,censor==0)$time)
+@
+
+So, $\hat \lambda= \frac{7}{155+153}=0.022$.
+
+\underline{Estimate variance}:
+
+\begin{equation}
+Var(\hat \lambda) =\frac{\hat \lambda^2}{\sum \delta_i}
+\end{equation}
+
+<<>>=
+var<-0.022^2/7
+@
+
+So the CIs are:
+
+<<>>=
+0.022-1.96*sqrt(var)
+0.022+1.96*sqrt(var)
+@
+
+\underline{Alternative approach}:
+
+<<>>=
+attach(lcancer)
+lcancersv<-Surv(time,censor,type="right")
+detach(lcancer)  
+
+lcancerSurv<-survfit(lcancersv~1,data=lcancer)
+plot(lcancerSurv)
+
+@
+
+The plot shows evidence for exponential decay, so we fit an exponential model:
+
+<<>>=
+lcancerreg<-survreg(lcancersv~1,
+                    dist="exponential")
+#summary(lcancerreg)
+@
+
+\begin{verbatim}
+survreg(formula = lcancersv ~ 1, dist = "exponential")
+            Value Std. Error  z        p
+(Intercept)  3.78      0.378 10 1.35e-23
+\end{verbatim}
+
+Note that the intercept is $\log(\hat \mu)$, log mean survival time.
+
+So, we can get $\hat \lambda=\frac{1}{\exp(\hat \mu)}$, and we can get CIs:
+
+$\frac{1}{\exp(\hat\mu \pm 1.96 SE)}=
+\frac{1}{\exp(3.78 \pm 1.96 \times 0.378)}
+$.
+
+
+## Two-sample data
+
+Here we test the null hypothesis
+$H_0: S_1(t) = S_2(t)$.
+
+## Parametric tests
+
+\paragraph{MLE tests}
+
+Assuming exponential, we test
+
+\begin{equation}
+W = \frac{\hat \lambda_1 - \hat \lambda_2}{\sqrt{\frac{\hat \lambda_1^2}{\sum d_{1i}}+\frac{\hat \lambda_1^2}{\sum d_{2i}}}}
+\sim N(0,1)
+\end{equation}
+
+\underline{Brain tumour data MLE by hand}
+
+<<>>=
+load("data/braintu.Rdata")
+n1<-6
+n2<-6
+gp1<-subset(braintu,group==1)
+gp2<-subset(braintu,group==2)
+## total times in gp1:
+sumt1<-sum(gp1$time)
+sumt2<-sum(gp2$time)
+deaths1<-sum(gp1$censor)
+deaths2<-sum(gp2$censor)
+
+(lambda1<-deaths1/sumt1)
+
+(lambda2<-deaths2/sumt2)
+
+## n.s.
+(W<-(lambda1-lambda2)/
+  sqrt((lambda1^2/deaths1)+(lambda2^2/deaths2)))
+@
+
+Compare with N(0,1).
+
+\underline{Brain tumour MLE using R}
+
+<<>>=
+brain_sv<-Surv(braintu$time,braintu$censor)
+brain_exp<-survreg(brain_sv~as.factor(braintu$group), 
+                   dist="exponential")
+summary(brain_exp)
+@
+
+Group 1 $\hat \lambda=\frac{1}{\exp(3.381)}=0.034$.
+
+Group 2 $\hat \lambda=\frac{1}{\exp(3.381+ 0.783 )}=0.0155$.
+
+Note that the effect is not significant, as computed by hand above.
+
+**Old exam question**:
+
+Survival times in days of 26 patients randomized to one of two chemo treatments for ovarian cancer.
+
+Kaplan-Meier:
+
+<<>>=
+time1<-c(59,115,156,268,329,431,448,477,638,803,855,1040,1106)
+censor1<-c(1,1,1,1,1,1,0,0,1,0,0,0,0)
+time2<-c(353,365,377,421,464,475,563,744,769,770,1129,
+         1206,1227)
+censor2<-c(1,1,0,0,1,1,1,0,0,0,0,0,0)
+time<-c(time1,time2)
+censor<-c(censor1,censor2)
+group<-c(rep(1,length(censor1)),
+                 rep(2,length(censor2)))
+group<-as.factor(group)
+ovarian_sv<-Surv(time,censor)
+(ovarian_fit<-survfit(ovarian_sv~group))
+plot(ovarian_fit)
+summary(ovarian_fit)
+@
+
+Checking goodness of fit:
+
+<<>>=
+ovarian_fit$time
+plot(-log(ovarian_fit$surv[1:13])~time1,ylim=c(0,1))
+plot(-log(ovarian_fit$surv[14:26])~time2,ylim=c(0,1))
+@
+
+MLE:
+
+<<>>=
+ovarian_exp<-survreg(ovarian_sv~as.factor(group), 
+                   dist="exponential")
+summary(ovarian_exp)
+@
+
+\begin{enumerate}
+\item Means and variances of $\hat\lambda$:
+
+Group 1 $\hat\lambda=1/\exp(6.868)= 0.00104$.
+
+Group 2 $\hat\lambda=1/\exp(6.868+0.613)= 0.000563$.
+
+The difference is not significant.
+
+Variances:
+
+Group 1: 
+<<>>=
+lambda1<-1/exp(6.868)
+(varlam1<-lambda1^2/7)
+sqrt(varlam1)
+
+## SE/exp(coef1)
+0.378/exp(6.868)
+@
+
+<<>>=
+lambda2<-1/exp(6.868+0.613)
+(varlam2<-lambda2^2/7)
+sqrt(varlam2)
+
+## *approximation* using SE and coefs:
+## sqrt(SE1^2+SE2^2)/exp(coef1+coef2)
+sqrt(0.378^2 + 0.586^2)/exp(6.868+0.613)
+@
+
+95\% CIs for lambda's:
+
+<<>>=
+lambda1-2*sqrt(varlam1);lambda1+2*sqrt(varlam1)
+lambda2-2*sqrt(varlam2);lambda1+2*sqrt(varlam2)
+@
+
+Alternatively, an **approximation** using survreg output:
+
+<<>>=
+1/exp(6.868-2*0.378); 1/exp(6.868+2*0.378)
+@
+
+\item 
+Mean survival and variance (sd) of mean:
+
+<<>>=
+(mu1<-1/lambda1); sqrt(mu1^2/7)
+(mu2<-1/lambda2); sqrt(mu2^2/5)
+@
+
+\item Median survival times and 95\% CI of median survival time estimates:
+
+Be sure to use natural logs:
+
+<<>>=
+## use natural logs:
+-log(0.5)/lambda1; sqrt((-log(0.5))^2 * mu1^2/7)
+-log(0.5)/lambda2; sqrt((-log(0.5))^2 * mu2^2/5)
+@
+
+MLE test by hand:
+
+<<>>=
+(lambda1-lambda2)/sqrt(lambda1^2/7 + lambda2^2/5)
+@
+
+Test against N(0,1) (not significant).
+\end{enumerate}
+
+**Likelihood ratio test**
+
+This is asymptotically equivalent to MLE, but better for small samples.
+
+Let $\sum d_{1i} = \Delta_1$ and $\sum d_{2i}=\Delta_2$. And let $\sum t_i = T_1$ and $\sum t_i = T_2$.
+
+\begin{equation}
+2\left\{ \Delta_1 \log \frac{\Delta_1}{T_1} +
+\Delta_2 \log \frac{\Delta_2}{T_2} - (\Delta_1 + \Delta_2) \log \frac{\Delta_1+\Delta_2}{T_1+T_2}  
+\right\}\sim \chi_1^2
+\end{equation}
+
+## Checking goodness-of-fit: Exponential, Weibull
+
+\begin{enumerate}
+\item **Exponential**: $-\log(\hat S(y))$ against $y$ should be approximately linear.
+\item **Weibull**: The plot of the cumulative hazard function $\log(-\log \hat S(y))$ against $\log y$ should be linear.
+\end{enumerate}
+
+## Non-parametric Log-rank test
+
+See p.\ 32, 33 for description of how to do the test by hand.
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+time i & $t_i$ & $r_{Ai}$ & $r_{Bi}$ & $r_i$ & $d_{Ai}$ & $d_{Bi}$ & $d_i$ & $e_{Ai}$ & $e_{Bi}$\\
+\hline
+ & & & & & & & & & \\
+\hline
+Total & & & & & O$_A$ & O$_B$ & & $E_A$ & $E_B$ \\
+\hline
+\end{tabular}
+
+The procedure is
+
+\begin{enumerate}
+\item Order times i (mark censored times). In column `times i' we put in only uncensored times.
+\item Fill out death columns by each group, for each time period i, $d_{Ai}$ and $d_{Bi}$; also compute total dead for each time: $d_{Ai}+d_{Bi}= d_i$.
+\item Fill out at risk column for each time: $r_{Ai}$ and $r_{Bi}$.
+
+\underline{Definition of at-risk at time i}:
+
+Remaining live cases - Already censored cases
+\item Compute total number at risk at time i: $r_{Ai} + r_{Bi} = r_i$
+\item Compute expected number of deaths:
+
+\begin{equation}
+e_{Ai} = d_i \frac{r_{Ai}}{r_i}
+\end{equation}
+
+\begin{equation}
+e_{Bi} = d_i \frac{r_{Bi}}{r_i}
+\end{equation}
+
+\item
+Compute $O_A = \sum d_{Ai}$, and 
+$O_B = \sum d_{Bi}$.
+
+\item
+Compute $E_A= \sum e_{Ai}$ and $E_B= \sum e_{Bi}$.
+\end{enumerate}
+
+The log-rank test is:
+
+
+\begin{equation}
+LR = \frac{(O_1-E_1)^2}{E_1} + \frac{(O_2-E_2)^2}{E_2} \sim \chi_1^2
+\end{equation}
+
+\underline{Example: Brain tumour data}
+
+
+<<eval=FALSE>>=
+load("data/braintu.Rdata")
+library(survival)
+attach(braintu)
+brainsv<-Surv(time,censor,type="right")
+survdiff(brainsv~as.factor(group),data=braintu)
+plot(survfit(brainsv~group,data=braintu))
+detach(braintu)
+@
+
+
+## Regression models
+
+### Accelerated failure time
+
+<<>>=
+load("data/wbcleuk.Rdata")
+head(wbcleuk)
+attach(wbcleuk)
+wbcleuksv<-Surv(survival)
+wbcleukregexp<-survreg(wbcleuksv~log.wbc.,
+                       dist="exponential")
+detach(wbcleuk)
+summary(wbcleukregexp)
+@
+
+**Interpretation**:
+
+$\hat \lambda(x) = \frac{1}{\exp(\hat\beta_0 + \hat\beta_1 x_1\dots )}= \exp( - (\hat\beta_0 + \hat\beta_1 x_1\dots) )$
+
+and $\frac{1}{\hat \lambda(x)}=$ mean survival time in days.
+
+CIs: as usual (need to look this up):
+
+$\frac{1}{\exp(\hat\mu \pm 1.96 SE)}$.
+
+
+
+
+### Proportional hazards
+
+**Model assumption checked by plotting complementary log-log survival probability against time. The curves should be roughly parallel**.
+
+For example, let the baseline hazard function be $h_0(t)$. Then, the form of the model is:
+
+\begin{equation}
+h(t;\mathbf{x})=\exp(\beta_1 x_1 + \beta_2 x_2+\beta_3 x_3) h_0(t)
+\end{equation}
+
+with $x_1, x_2, x_3$ as given. 
+
+To get hazard ratio and CIs, just exponentiate for different levels using the various contrast coding values: e.g.,
+$\exp(\beta_1 x_1 \pm 2\times SE)$.
+
+Example using wbcleukemia data:
+
+<<>>=
+wbccoxph<-coxph(wbcleuksv~log.wbc.,wbcleuk)
+summary(wbccoxph)
+plot(survfit(wbccoxph))
+@
+
+
+## Task 5: Review questions
+
+Lymphoma data:
+
+<<eval=FALSE>>=
+load("data/lymphoma.Rdata")
+lymphomaSurv<-Surv(lymphoma$time,
+                   lymphoma$censor)
+stage<-factor(lymphoma$stage)
+
+## Kaplan-Meier: strata is used here
+KMlymphoma<-survfit(lymphomaSurv~stage)
+summary(KMlymphoma)
+
+plot(KMlymphoma)
+plot(KMlymphoma,fun="cloglog")
+
+##log rank test:
+LogRanklymphoma<-survdiff(lymphomaSurv~stage)
+LogRanklymphoma
+
+## cox ph:
+lymphomacoxph<-coxph(lymphomaSurv~stage)
+lymphomacoxph
+summary(lymphomacoxph)
+plot(survfit(lymphomacoxph))
+@
+
+# Sampling Theory and Design of Experiments
+
+## Different ways to write a linear model
+
+\begin{enumerate}
+\item j indexes observations: j=1,\dots, n.
+
+\begin{equation}
+Y_j= f(x_j)^T \beta + \epsilon_j
+\end{equation}
+
+E.g., $f(x_j)^T= (1~x_1)$. (p.\ 6)
+\item 
+
+\begin{equation}
+y_i = \beta_0 + \beta_1 x_1 + \epsilon_i
+\end{equation}
+
+i indexes observation.
+\item 
+
+\begin{equation}
+EY = x_1 + x_2 + x_3
+\end{equation}
+
+\item On p.\ 18
+
+\begin{equation}
+Y_{ij}= \mu_i + \epsilon_{ij}
+\end{equation}
+
+i indexes different treatment groups
+
+j indexes observed response
+
+\item On p.\ 21 
+
+\begin{equation}
+Y_{ij} = \mu + \alpha_i + \tau_j + \epsilon_{ij}
+\end{equation}
+
+i indexes block, and j indexes treatment.
+
+\item On p.\ 22, with replicates, k indexes the replicates:
+
+\begin{equation}
+Y_{ijk} = \mu + \alpha_i + \tau_j +
+(\alpha \tau)_{ij}
++
+\epsilon_{ijk}
+\end{equation}
+
+i indexes block, j indexes treatment
+
+\end{enumerate}
+
+
+
+
+
+## Review of General Linear Models
+
+[Also see LinearModelsSummary.pdf]
+
+A deterministic model would be $y=\phi(f(x),\beta)=\beta_0+\beta_1x$.
+Cf.\ a non-deterministic model: $y=\phi(f(x),\beta,\epsilon)=\beta_0+\beta_1x+\epsilon$. The general linear model is:
+
+\begin{equation}
+Y=\sum_{i=1} f_i(x_i)\beta_i +\epsilon \quad E[Y]=\sum \mathbf{f(x)}\mathbf{\beta}
+\end{equation}
+
+The matrix formulation:
+
+\begin{equation}
+Y = X\beta + \epsilon \Leftrightarrow y_j = f(x_j)^T \beta + \epsilon_j, i=1,\dots,n
+\end{equation}
+
+$E[Y]=X\beta$. X is the **design matrix**.
+
+**Example**: $y=\beta_0 + \beta_1 x + \epsilon$. Here, $f(x)= (1~x)$.
+
+\paragraph{Least squares estimation: Geometric argument}
+
+When we have a deterministic model  $y=f\phi(x,\beta)=\beta_0+\beta_1x=X\beta$, this implies a perfect fit to all data points. 
+This is like solving the equation $Ax=b$ in linear algebra: $X\beta=y$.
+
+When we have a non-deterministic model 
+$y=f\phi(x,\beta,\epsilon)=\beta_0+\beta_1x+\epsilon$, there is no unique solution. Now, the equation $Ax$ is an approximation to b in $Ax=b$. We try to get Ax as close to b as possible, i.e., $\mid b-Ax\mid$  is minimized. The problem now becomes finding $\hat{x}$ such that $A\hat{x}=\hat b$.
+
+%%to-do: graphic needed
+%\includegraphics[width=10cm]{LSEgraphic}
+
+Now, notice that $(Y - X\hat\beta)$ and $X\beta$ are perpendicular to each other, i.e.,
+
+\begin{equation}
+(Y- X\hat\beta)^T X \beta = 0 \Leftrightarrow (Y- X\hat\beta)^T X = 0 
+\end{equation}
+
+Multiplying out the terms:
+
+\begin{equation}
+\begin{split}
+~& (Y- X\hat\beta)^T X = 0  \\
+\Leftrightarrow& Y^T X - \hat\beta^TX^T X = 0\\
+\Leftrightarrow& Y^T X = \hat\beta^TX^T X \\
+\Leftrightarrow& (Y^T X)^T = (\hat\beta^TX^T X)^T \\
+\Leftrightarrow& X^T Y = X^TX\hat\beta\\
+\end{split}
+\end{equation}
+
+**This gives us the important result**: 
+\begin{equation}
+\hat\beta = (X^TX)^{-1}X^T Y
+\end{equation}
+X is of full rank, therefore $X^TX$ is positive definite symmetric $p\times p$ and invertible.
+
+[to-do: summarize ch 6 of Lay in matrix algebra notes]
+
+\paragraph{Statistical properties of LSEs}
+
+\begin{equation}
+E[\hat\beta] = (X^TX)^{-1}X^T Y = (X^TX)^{-1}X^T X\beta = \beta
+\end{equation}
+
+\begin{equation}
+\begin{split}
+Cov(\hat\beta) =& Var(\hat\beta) \\
+=& Var([(X^TX)^{-1}X^T] Y) \\
+=& [(X^TX)^{-1}X^T] \sigma^2 I  [(X^TX)^{-1}X^T]^{T}\\
+=& [(X^TX)^{-1}X^T] \sigma^2 I  X[(X^TX)^{-1}]^{T} \\
+=& \sigma^2 (X^TX)^{-1} X^T X [(X^TX)^{-1}]^{T}\\
+=& \sigma^2 (X^TX)^{-1} X^T X (X^TX)^{-1} \\
+=& \sigma^2 (X^TX)^{-1}\\
+\end{split}
+\end{equation}
+
+Note that $[(XX^T)^{-1}]^{T}= (XX^T)^{-1}$ because $(XX^T)^{-1}$ is symmetric.
+
+## Overparameterization and contrast coding
+
+Suppose there are three groups, so our model is
+
+\begin{equation}
+Y_i = \alpha + \gamma_1 D_{i1} + \gamma_{2}D_{i2}+\epsilon_i 
+\end{equation}
+
+A typical thing we do is **dummy coding**:
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{ccc}
+Group & $D_1$ & $D_2$\\
+1 & 1 & 0\\
+2 & 0 & 1\\
+3 & 0 & 0\\
+\end{tabular}
+\end{center}
+\caption{Dummy coding.}
+\label{dummycoding}
+\end{table}%
+
+Let $\mu_i$ be the $i$-th group. Taking expectations:
+
+\begin{equation}
+\begin{split}
+\mu_1 =& \alpha + \gamma_1 \times 1 + \gamma_{2}\times 0 = \alpha + \gamma_1\\
+\mu_2 =& \alpha + \gamma_1 \times 0 + \gamma_{2}\times 1 = \alpha + \gamma_2\\
+\mu_3 =& \alpha + \gamma_1 \times 0 + \gamma_{2}\times 0 = \alpha \\
+\end{split}
+\end{equation}
+
+There are three parameters, and three equations:
+
+\begin{equation}
+\mu_1= \alpha + \gamma_1 \quad \mu_2= \alpha + \gamma_2 \quad \mu_3=\alpha
+\end{equation}
+
+Overparameterization occurs in the following situation:
+Let j index the groups. Then:
+
+\begin{equation}
+y_{ij}=\mu + \alpha_j + \epsilon_{ij}
+\end{equation}
+
+Taking expectations: $\mu_j =\mu + \alpha_j$. Now we have the equations
+
+\begin{equation}
+\begin{split}
+\mu_1 =& \mu + \alpha_1\\
+\mu_2 =&  \mu + \alpha_2\\
+\mu_3 =& \mu + \alpha_3  \\
+\end{split}
+\end{equation}
+
+There are four parameters, and three equations:
+
+These equations can't be solved (don't have a unique solution). The model is said to be overparameterized or underdetermined. 
+
+The solution is to place a restriction on the parameters: express one parameter in terms of the others. An example is sum contrast coding: if there are p parameters, then, just stipulate that 
+$\alpha_1 + \dots + \alpha_p=\sum_{i=1}^{p} \alpha_i = 0$.
+
+Another example is deviation regressors or **effects coding**: Let m be the maximum number of groups. For each of the j groups,
+
+\begin{equation}
+D_j= 
+\begin{cases}
+1 & \hbox{ group } j \\
+-1 & \hbox{ group } m\\
+0 & \hbox{otherwise}
+\end{cases}
+\end{equation}
+
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{ccc}
+Group & $\alpha_1$ & $\alpha_2$\\
+1 & 1 & 0\\
+2 & -1 & 1\\
+3 & -1 & -1\\
+\end{tabular}
+\end{center}
+\caption{Effects coding (sum to zero constraint).}
+\label{dummycoding}
+\end{table}%
+
+Here, we have constrained the parameters so that $\sum \alpha_i = 0$, i.e., 
+$\alpha_3 = - \alpha_1 -\alpha_2$.
+Now we have three equations and three parameters; this system of equations has a unique solution.
+
+\begin{equation}
+\begin{split}
+\mu_1 =& \mu + \alpha_1\\
+\mu_2 =&  \mu + \alpha_2\\
+\mu_3 =& \mu + \alpha_3 = \mu - \alpha_1 - \alpha_2 \\
+\end{split}
+\end{equation}
+
+Note that two of the parameters are correlated when we use effects coding:
+
+**Example**: 
+
+<<>>=
+m<-matrix(c(c(rep(1,9)),
+          c(rep(1,3),rep(0,3),rep(-1,3)),
+          c(rep(0,3),rep(1,3),rep(-1,3))),
+          byrow=FALSE,nrow=9)
+cov(m)
+@
+
+\paragraph{Polynomial regression}
+
+\begin{equation}
+E[Y] = \beta_0 + \beta_1 x_1 + \beta_2 x_2
+\end{equation}
+
+If the design matrix is:
+
+\begin{equation}
+X=\begin{pmatrix}
+1 & x_{11} & x_{21}\\
+1 & x_{12} & x_{22}\\
+1 & x_{13} & x_{23}\\
+\end{pmatrix}
+\end{equation}
+
+This matrix full rank (i.e., non-singular) iff there exists no linear relationship like: 
+
+\begin{equation} \label{fullrank}
+\lambda_0 + \lambda_1 x_{1j} + \lambda_2 x_{2j} = 0 \quad \hbox{ for } j = 1,2,3
+\end{equation}
+
+$\lambda_i$ are not all zero. 
+
+\underline{Example of non-full rank}:
+
+<<>>=
+(m<-matrix(c(1,1,1,1,0,1/2,0,1,1/2),ncol=3))
+lambda<-matrix(c(1,-1,-1))
+m%*%lambda
+@
+
+
+If X has full rank, the three points are not collinear. Example of collinearity: each triple of rows is for each group $\alpha_i$.
+
+\begin{equation}
+X=\begin{pmatrix}
+1 & 1 & 0 & 0\\
+1 & 1 & 0 & 0\\
+1 & 1 & 0 & 0\\
+\cline{1-4}
+1 & 0 & 1 & 0\\
+1 & 0 & 1 & 0\\
+1 & 0 & 1 & 0\\
+\cline{1-4}
+1 & 0 & 0 & 1\\
+1 & 0 & 0 & 1\\
+1 & 0 & 0 & 1\\
+\end{pmatrix}
+\end{equation}
+
+The columns c2-c4 in this matrix are collinear: c2-c3-c4=0. Therefore the matrix is not full rank, therefore not invertible.
+
+This motivates the use of the corner-point constraint (dummy coding) or effects coding (depending on what the research question is).  Now, if we remove the final column, we have full rank and an invertible matrix.  See below:
+
+\begin{equation}
+\begin{pmatrix}
+ 1 & 1 & 0 \\ 
+ 1 & 1 & 0 \\ 
+ 1 & 1 & 0 \\
+ \cline{1-3}
+ 1 & 0 & 1 \\ 
+ 1 & 0 & 1 \\ 
+ 1 & 0 & 1 \\ 
+\cline{1-3}
+1 & -1 & -1 \\ 
+ 1 & -1 & -1 \\ 
+ 1 & -1 & -1 \\ 
+\end{pmatrix}
+\end{equation}
+
+The first two parameters as $\alpha_1$ and $\alpha_2$.
+
+**Example**: Let $y=\beta_0 + \beta_1 x$. How to make the design matrix orthogonal? Centering achieves that; see section~\ref{centering}.
+
+## Orthogonality
+
+Let 
+
+\begin{equation}
+\beta_{p} = 
+\begin{pmatrix}
+\gamma_{q}\\
+\delta{p-q}
+\end{pmatrix}
+\quad 
+X_{n\times p} = {V_{n\times q} W_{n\times (p-q)}}
+\end{equation}
+
+V and W are orthogonal, i.e., $V^T W = 0$.
+
+Consequence of orthogonality:
+
+\begin{equation}
+Cov(\hat\beta) = 
+\sigma^2 
+\begin{pmatrix}
+(V^TV)^{-1} & 0 \\
+0 & (W^TW)^{-1}\\
+\end{pmatrix}
+\end{equation}
+
+$\gamma$ and $\delta$ are independent in the statistical sense. Excluding $\delta$ will not affect estimate of $\gamma$'s sampling distribution.
+
+\paragraph{Prediction}
+
+If we want to predict a new value given a new data point $x_0$.
+
+\begin{equation}
+E[Y[x_0]] = y(x_0) = f(x_0)^T \beta
+\end{equation}
+
+The estimate $\hat y(x_0) =f(x_0)^T\hat \beta$ is unbiased. The variance is 
+
+\begin{equation}
+\begin{split}
+Var(\hat y(x_0)) =& f(x_0)^T Cov\hat \beta f(x_0)\\
+=& \sigma^2 f(x_0)^T f(x_0)\\
+\end{split}
+\end{equation}
+
+So, variance (accuracy) depends on depends on X and $x_0$.
+
+**Example**: Consider simple linear regression. We know (LinearModelsSummary.pdf) that
+
+\begin{equation}
+(X^TX)^{-1} = \frac{1}{n S_{xx}} 
+\begin{pmatrix}
+\sum x^2 & -\sum x\\
+-\sum x & n \\
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+Var(\hat y(x_0)) =& Var(\hat \beta_0 + \hat \beta_1 x_0) \\
+=&  \frac{\sigma^2}{nS_{xx}} 
+\begin{pmatrix}
+1 & x_0\\
+\end{pmatrix}
+\begin{pmatrix}
+\sum x^2 & -\sum x\\
+-\sum x & n \\
+\end{pmatrix}
+\begin{pmatrix}
+1\\
+x_0\\
+\end{pmatrix}\\
+=& \sigma^2 (\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{xx}}) \\
+\end{split}
+\end{equation}
+
+where $\bar{x} = \frac{\sum x}{n}$, and $S_{xx}=(\sum x_2) -n\bar{x}^2$.  The above derivation is proved in equation~(\ref{task2exercise}) on page~\pageref{task2exercise}.
+
+One should avoid predicting outside the region containing the design points, because we usually have no idea whether the model holds outside the range of the design points. 
+
+## Standardized Information Matrix (SIM)
+
+$M=\frac{1}{n} X^T X$.
+
+Standard variance at point x:
+
+\begin{equation}
+\begin{split}
+d(x) =& n f(x)^{T} (X^T X)^{-1} f(x)\\
+=& f(x)^{T} M^{-1} f(x)
+\end{split}
+\end{equation}
+
+This is a very important equation for the next section.
+
+The SIM remains unchanged for different sample sizes.
+
+## Confidence regions
+
+Recall that 
+\begin{enumerate}
+\item $\sigma^{-2} (\hat\beta-\beta)^T X^TX (\hat\beta-\beta) \sim \chi_p^2$
+\item
+$p^{-1} \sigma^{-2}  (\hat\beta-\beta)^T X^TX (\hat\beta-\beta) \sim F(p,n-p)$
+\end{enumerate}
+
+Therefore, a confidence region for the vector $\beta$ will take the form:
+
+\begin{equation}
+(\hat\beta-\beta)^T X^TX (\hat\beta-\beta) < \hbox{constant}
+\end{equation}
+
+where the RHS is the appropriate quantile of the $\chi^2$ or F-distribution.
+
+The size of this ellipsoid will depend on:
+
+\begin{enumerate}
+\item $\sigma^2$ or $\hat\sigma^2$ 
+\item The confidence level chosen
+\item The information matrix $X^TX$ (this also determines shape).
+\end{enumerate}
+
+**Examples**:
+
+Consider simple linear regression with observations x=-1,0,1, with $\sigma^2$ unknown. 
+
+<<>>=
+X<-matrix(c(rep(1,3),c(-1,0,1)),
+          byrow=FALSE,ncol=2)
+(XTX<-t(X)%*%X)
+@
+
+\begin{equation}
+p^{-1} \hat\sigma^{-2}  (\hat\beta-\beta)^T X^TX (\hat\beta-\beta) = 2^{-1}\sigma^{-2} 
+(\hat\beta-\beta)^T \begin{pmatrix}
+3 & 0 \\
+0 & 2\\
+\end{pmatrix}
+(\hat\beta-\beta)
+\end{equation}
+
+Multiplying out the terms, we get:
+
+\begin{equation}
+3(\hat\beta-\beta)^2+2(\hat\beta-\beta)^2 \leq 2 \hat\sigma^2 F_{2,1,1-\alpha}
+\end{equation}
+
+Example showing the ellipses:
+
+<<fig=TRUE>>=
+op<-par(mfrow=c(1,2),pty="s")
+library(ellipse)  
+# a) Plot density of betahat given 
+## the true par. vals
+# Consider model y=2+x+ epsilon, 
+## with epsilon ~ N(0,1)
+x<-c(-2,2) # specify design points
+
+X<-matrix(c(rep(1,length(x)),x),
+          nrow=length(x)) # Design matrix
+inv.info.matrix<-solve(t(X)%*%X) 
+# inverse of information matrix
+
+# From eqn(25), variance matrix of betahat is 
+# 2*inv.info.matrix
+plot(ellipse(2*inv.info.matrix,
+             centre=c(2,1),level=0.95),
+     type="l") # 95% joint probability 
+## contour
+lines(ellipse(2*inv.info.matrix,
+              centre=c(2,1),
+              level=0.5)) 
+# 50% joint probability contour
+
+lines(ellipse(2*inv.info.matrix,
+              centre=c(2,1),
+              level=0.05)) 
+# 5% joint probability contour
+
+x<-c(0,1,2) # alternative design
+X<-matrix(c(rep(1,length(x)),x),
+          nrow=length(x)) 
+inv.info.matrix<-solve(t(X)%*%X) 
+plot(ellipse(2*inv.info.matrix,
+             centre=c(2,1),
+             level=0.95),type="l") 
+lines(ellipse(2*inv.info.matrix,
+              centre=c(2,1),
+              level=0.5)) 
+lines(ellipse(2*inv.info.matrix,
+              centre=c(2,1),
+              level=0.05)) 
+@
+
+## Optimality criteria
+
+Informally, a design is good if $X^T X$ is large, and its inverse small (we get lower SEs for the coefficient estimates).
+
+To-do: example showing optimal group size.
+
+### D-optimality
+
+Maximize determinant of $X^TX$, or of $M$.
+In positive definite matrices, the determinant is the product of the eigenvalues (which are real and positive). This criterion minimize the area/volume of the ellipsoids discussed earlier.
+
+Example: Simple linear regression: $y=\beta_0 + \beta_1 x$.
+
+\begin{equation}
+X^TX = 
+\begin{pmatrix}
+n & \sum x\\
+\sum x & \sum x^2
+\end{pmatrix}
+\end{equation}
+
+So, 
+\begin{equation}
+det(X^TX)=n\sum x^2-(\sum x)^2=ns_{xx}
+\end{equation}
+
+It would be D-optimal to make $s_{xx}$ as large as possible, but this has the weird consequence that it's D-optimal to have half the values at the minimum, and half at the maximum. This has the disadvantage that we get no evidence for the middle range.
+
+**Another example (Task 2)**: In the quadratic regression model
+
+\begin{equation}
+E[Y]= \beta_0 + \beta_1 x + \beta_{11} x^2 \quad x\in [-1,1]
+\end{equation}
+
+if the points are $x=-1, a, 1$, the D-optimal choice for a is 0. Proof:
+
+First note that the X matrix is square:
+
+\begin{equation}
+\begin{pmatrix}
+1 & -1 & 1\\
+1 & a & a^2\\
+1 & 1 & a\\
+\end{pmatrix}
+\end{equation}
+
+For a square matrix, $det(X^TX)= det(X^T)det(X)=det(X)^2$. So it is enough to find $det(X)^2$, and then maximize.
+
+\begin{equation}
+\begin{split}
+det\left( \begin{pmatrix}
+1 & -1 & 1\\
+1 & a & a^2\\
+1 & 1 & a\\
+\end{pmatrix}
+\right) =& \\
+1\times det \left( \begin{pmatrix}
+a & a^2\\
+1 & a\\
+\end{pmatrix}
+\right)
++&\\
+1\times 
+det\left( \begin{pmatrix}
+1 & a^2\\
+1 & a\\
+\end{pmatrix}
+\right)
++&\\
+1\times 
+det\left( \begin{pmatrix}
+1 & a\\
+1 & 1\\
+\end{pmatrix}
+\right) =& \cancel{a}- a^2 + 1 - a^2 + 1 - \cancel{a} \\
+=& 2 - 2a^2
+\end{split}
+\end{equation}
+
+So, 
+
+\begin{equation}
+y= det(X)^2 = (2 - 2a^2)^2
+\end{equation}
+
+Using the chain rule, 
+$dy/dx = -4a \times (2 - 2a^2)$. Equating this to zero:
+
+\begin{equation}
+-4a \times (2 - 2a^2) = 0 
+\end{equation}
+
+implies that, necessarily, a=0.
+
+Using the product rule,
+$dy^2/d^2x = -4a \times (-4a) -4\times(2 - 2a^2)=16a^2-8 + 8a^2=-8 < 0$ when a=0. Hence maximum at a=0.
+
+
+**Old exam problem**:
+
+Given three design points: (1,0,0), (0,1,0), and (0,0,1). The model is
+
+\begin{equation}
+EY = \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_{12} x_{12} + \beta_{13} x_{13} + \beta_{23} x_{23}
+\end{equation}
+
+The model matrix is:
+
+<<>>=
+(m<-matrix(c(1,0,0,0,1,0,0,0,1),ncol=3))
+(x1x2<-m[,1]*m[,2])
+(x1x3<-m[,1]*m[,3])
+(x2x3<-m[,2]*m[,3])
+m2<-cbind(m,x1x2,x1x3,x2x3)
+## replicate:
+m3<-rbind(m2,m2)
+## X^TX
+XTX<-t(m3)%*%m3
+## singular:
+#solve(XTX)
+@
+
+Now, suppose we add the points (a,1-a,0), (a,0,1-a), (0,a,1-a). Then we have a matrix like this now for a=1/2:
+
+<<>>=
+a<-1/2
+m3<-matrix(c(a,(1-a),0,
+             (1-a),0,a,
+             0,a,(1-a)),ncol=3)
+m4<-rbind(m,m3)
+(x1x2<-m4[,1]*m4[,2])
+(x1x3<-m4[,1]*m4[,3])
+(x2x3<-m4[,2]*m4[,3])
+m5<-cbind(m4,x1x2,x1x3,x2x3)
+## det(XTX) largest for a=1/2:
+## a=0: det=0
+## a=1: det=0
+## a=1/2, det>0:
+det(t(m5)%*%m5)
+@
+
+The new design matrix is D-optimal when a=1/2, because the lower-right block matrix determines the determinant of the whole matrix, and is largest when a=1/2. 
+
+### G-optimality: Considers worst-case scenario
+
+Minimize the maximum standardized variance over the design region $\Omega$:
+
+\begin{equation}
+\underset{x\in \Omega}{\hbox{ max }} d(\mathbf{x})
+\end{equation}
+
+For each potential design, evaluate the worst possible variance of prediction, then choose the design for which this is the least. 
+
+**Example**: Continuing with simple linear regression example for D-optimization:
+
+Recall that: 
+
+\begin{equation}
+\begin{split}
+d(x) =& n f(x)^{T} (X^T X)^{-1} f(x)\\
+=& f(x)^{T} M^{-1} f(x)
+\end{split}
+\end{equation}
+
+and $S_{xx}=(\sum x^2) -n\bar{x}^2$.
+
+We need to maximize d(x). For simple linear regression, d(x) will simplify to: 
+
+\begin{equation}
+\begin{split}
+d(x) =& n f(x)^{T} (X^T X)^{-1} f(x)\\
+=& n \begin{pmatrix}
+1 & x
+\end{pmatrix}
+\frac{1}{nS_{xx}} 
+\begin{pmatrix}
+\sum x^2 & -\sum x\\
+-\sum x & n\\
+\end{pmatrix}
+\begin{pmatrix}
+1\\
+x\\
+\end{pmatrix}\\
+=& 
+\frac{1}{S_{xx}}
+\begin{pmatrix}
+\sum x^2 - x\sum x & xn - \sum x\\
+\end{pmatrix}
+\begin{pmatrix}
+1\\
+x\\
+\end{pmatrix}\\
+=& \frac{1}{S_{xx}}
+\begin{pmatrix}
+\sum x^2 - x \sum x + x(xn - x\sum x)
+\end{pmatrix}\\
+=& \frac{1}{S_{xx}}
+\begin{pmatrix}
+\sum x^2 - 2x \sum x + x^2n
+\end{pmatrix}\\
+\end{split}
+\end{equation}
+
+Recall now that (**this should be committed to memory**): 
+
+\begin{equation} \label{task2exercise}
+\begin{split}
+~& (x-\bar{x})^2 = x^2 + \bar{x}^2 - 2x \bar{x}\\
+\Leftrightarrow & n(x-\bar{x})^2 = nx^2 + \mathbf{n \bar{x}^2} - 2n x \bar{x}\\
+\end{split}
+\end{equation}
+
+So we can write: 
+
+\begin{equation}
+n(x-\bar{x})^2 - \mathbf{n\bar{x}^2} = n\bar{x}^2 
+- 2n x\bar{x}
+\end{equation}
+
+We are going to replace the RHS above with the LHS in the equation below (see boldface part):
+
+\begin{equation}
+\begin{split}
+=& \frac{1}{S_{xx}}
+(\sum x^2 - 2x \sum x + x^2n)
+= \frac{1}{S_{xx}}
+(\sum x^2 + x^2n - 2x \sum x)
+\\
+=& \frac{1}{S_{xx}}
+(\sum x^2 + x^2n - 2x \sum x)
+= \frac{1}{S_{xx}}
+(\sum x^2 + x^2n - 2nx \bar{x}) \quad (\because 2x \sum x = 2nx \bar{x})  \\
+=& \frac{1}{S_{xx}}
+(\sum x^2 + n(x-\bar{x})^2 - \mathbf{n\bar{x}^2})
+\\
+=& \frac{1}{S_{xx}}
+(\sum x^2 - \mathbf{n\bar{x}^2} + n(x-\bar{x})^2)
+\\
+=& \frac{1}{S_{xx}}
+(S_{xx} + n(x-\bar{x})^2) \quad (\because S_{xx}=(\sum x^2) -n\bar{x}^2)\\
+=& 
+1 + \frac{n(x-\bar{x})^2)}{S_{xx}}\\
+\end{split}
+\end{equation}
+
+Therefore, we need to maximize:
+
+\begin{equation}
+d(x)=1 + \frac{n(x-\bar{x})^2)}{S_{xx}}
+\end{equation}
+
+This leads to the same design as D-optimality, as we can maximize this by making x as far as possible as $\bar{x}$.
+
+**Another example (Task 2 continued)**: quadratic regression example from previous section on D-optimality:
+
+<<>>=
+X<-matrix(c(1,1,1,-1,0,1,1,0,1),
+          ncol=3,byrow=F)
+
+#X<-matrix(c(1,1,1,
+#            1,-1,0,
+#            1,1,0),
+#          ncol=3,byrow=F)
+
+## inverse multiplied by a constant:
+(inv<-4*(invXTX<-solve(t(X)%*%X)))
+@
+
+Next, since n=3, compute:
+
+\begin{equation}
+\begin{split}
+3 
+\begin{pmatrix}
+1 & x & x^2
+\end{pmatrix}
+\frac{1}{4}
+\begin{pmatrix}
+4 & 0 & -4 \\ 
+ 0 & 2 & 0 \\ 
+ -4 & 0 & 6 \\ 
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+x\\
+x^2\\
+\end{pmatrix} 
+=&\\
+\frac{3}{4} (4- 6x^2 + 6x^4) ~&\\
+\frac{3}{4} (6(x^2 - \frac{1}{2})^2 + \frac{5}{2})
+\end{split}
+\end{equation}
+
+This is maximized when $x^2$ is as far as possible from $\frac{1}{2}$, which is  when $x=-1,0,1$. For each of these values of x, $d(x)=3$.
+
+### V-optimality
+
+A design is V-optimal if it minimizes a weighted average of the standardized variance of prediction over the design region:
+
+\begin{equation}
+\int_{\Omega} d(x) w(x) \, dx
+\end{equation}
+
+Example: Simple linear regression with $x\in (-1,1)$ and uniform weighting, we minimize: 
+
+\begin{equation}
+\begin{split}
+\int_{-1}^1 d(x) w(x) \, dx =& \int_{-1}^1 1 + \frac{n(x-\bar{x})^2}{S_{xx}} \, dx\\
+=& \int_{-1}^1 1 + \frac{n}{S_{xx}}(x^2+\bar{x}^2-2x\bar{x}) \, dx\\
+=& 2 + \frac{n}{S_{xx}}(\frac{1}{3}+\bar{x}^2-\bar{x} - 
+(-\frac{1}{3}-\bar{x}^2-\bar{x}) ) \\
+=& 2 + \frac{n}{S_{xx}}(\frac{2}{3} + 2\bar{x}^2)= 2 + \frac{n}{3S_{xx}}(2+6\bar{x}^2)\\
+\end{split}
+\end{equation}
+
+Here, too, minimizing the above amounts to taking half of the observations at each end-point (as in D- and G-optimality), making $S_{xx}$ as large as possible and $\bar{x}=0$.
+
+
+### A-optimality
+
+Minimize trace of $(X^T X)^{-1}$. Equivalently: minimize the sum of the variances of the parameter estimates; makes sense only if the parameters are estimated on the same dimension.
+
+(SV: Shouldn't scaling allow us to force that?)
+
+## Design for qualitative explanatory factors: one factor
+
+### Randomization
+
+Randomization adds to the robustness of the statistical procedures (see example in lecture notes; to-do).
+
+### Completely randomized design (CRD)
+
+ Here, every possible allocation of subjects to treatments is equally likely.
+ 
+Here, i indexes group, j indexes observation in i-th group, $n_i$ is sample size in i-th group.
+
+ \begin{equation}
+ y_{ij}= \mu_i + \epsilon_{ij} \quad i=1,\dots,m; j=1,\dots,n_i
+ \end{equation}
+
+$\mu_i$ is unknown mean in i-th group.
+
+\begin{equation}
+\hat\mu_i = Y_{i\cdot} \quad Var(\hat\mu_i) = \frac{\sigma^2}{n_i}
+\end{equation}
+
+The residual sum of squares is the usual one, with n-k degrees of freedom (n: total num.\ of obs.). This leads to the one way analysis of variance.
+
+Note that the variance of the diff.\ in means of the two effects (trtmt vs placebo, for example), $\mu_1-\mu_2$, is (assuming equal sample sizes b in each group)
+
+\begin{equation} \label{crdvar}
+Var(\mu_1 - \mu_2) = \frac{\sigma^2}{b}+\frac{\sigma^2}{b} = \frac{2\sigma^2}{b}
+\end{equation}
+
+\paragraph{Blocking}
+
+One can group subjects into blocks, thereby reducing variance within group (which affects $\sigma^2$).
+
+### Randomized block design (RBD)
+
+We have several blocks (say, male, female) and equal nos.\ of treatment within each block, with randomization being done independently within each block.
+
+Let 
+\begin{enumerate}
+\item
+b be the no.\ of blocks, 
+\item 
+t be the no.\ of treatments. 
+\end{enumerate}
+
+The model is a two-way analysis of variance:
+
+\begin{equation}
+y_{ij}= \mu + \alpha_i + \tau_j + \epsilon_{ij} \quad i=1,\dots,b; j=1,\dots,t
+\end{equation}
+
+The variance of the difference in treatment effect is
+
+\begin{equation}
+var(\tau_1-\tau_2) = var(\tau_1) + var(\tau_2) - 2Cov(\tau_1,\tau_2) =
+\frac{\sigma^2}{b}(1-\frac{1}{t})+\frac{\sigma^2}{b}(1-\frac{1}{t}) + 2 \frac{\sigma^2}{bt} = \frac{2\sigma^2}{b}
+\end{equation}
+
+which is the same as the completely randomized design's (CRD's) variance (see equation~\ref{crdvar}). One consequence of this equality in variance is that, if the block effect is negligible, the randomization in the RBD has been unnecessarily restricted and there are fewer degrees of freedom for estimating $\sigma^2$, so that RBD ends up being worse than the CRD.
+
+## Design for qualitative explanatory factors: multiple factors
+
+This is relevant for the situation where we have several factors with multiple levels.
+
+### Latin Square designs
+
+[Definitions and finite field theory taken almost  verbatim from Padraic Bartlett's lecture notes: http://math.ucsb.edu/$\sim$padraic/math.html]
+
+\begin{definition}
+A latin square of order n is a $n\times n$ array filled with n distinct symbols (by convention \{1,\dots, n\}), such that no symbol is repeated twice in any row or column.
+\end{definition}
+
+\begin{definition}
+A pair of $n\times n$ Latin squares is called orthogonal if, when we superimpose them (i.e., place one on top of the other), each of the possible $n^2$ ordered pairs of symbols occur exactly once.
+\end{definition}
+
+\begin{definition}
+A collection of k $n\times n$ Latin squares is called mutually orthogonal if every pair of Latin squares in our collection is orthogonal.
+\end{definition}
+
+\begin{proposition}
+For any n, the maximum size of a set of $n\times n$ mutually orthogonal Latin squares is $n-1$.
+\end{proposition}
+
+Consider the following example. 
+Rows refers to Run (indexed by i), Columns refer to Position in machine (indexed by j), and the materials are A,B,C (indexed by k).
+
+\begin{tabular}{cccc}
+      & pos 1 & pos 2 & pos 3\\
+run 1 & A  & B  & C\\
+run 2 & C  & A  & B \\
+run 3 & B  & C  & A\\
+\end{tabular}
+
+The model is:
+
+\begin{equation}
+y_{ij} = \mu + \alpha_i + \beta_j + \tau_{kij} + \epsilon_{ij} 
+\quad \epsilon_{ij} \sim N(0,\sigma^2)
+\end{equation}
+
+The constraints on the parameters:
+\begin{enumerate}
+\item Run:
+$\alpha_3 = -\alpha_1 - \alpha_2$
+\item Position in machines:
+$\beta_3 = -\beta_1 - \beta_2$
+\item Materials:
+$\tau_3 = -\tau_1 - \tau_2$
+
+How to interpret the indexing: $\tau_{k=1(i=1,j=1)}$: treatment A, first row, first column.
+\end{enumerate}
+
+
+The design matrix will be set up as follows.  We have 9 rows and 7 parameters. We create a $9\times 7$ matrix. The first three rows refer to the first run, the second three to the second run, and the third to the third run.
+
+\begin{enumerate}
+\item First code the $\alpha_1$ column: 
+
+\begin{equation}
+\alpha_1= 
+\begin{cases}
+1 & \hbox{ if row 1 } \\
+0 & \hbox{ if row 2 } \\
+-1 & \hbox{ if row 3 }
+\end{cases}
+\end{equation}
+
+-1 if row 3 because $\alpha_3 = -\alpha_1 -\alpha_2$, so, -1 for $\alpha_1$ and $\alpha_2$ in row 3 means $\alpha_3$.
+
+\item Then code $\alpha_2$ column:
+
+\begin{equation}
+\alpha_2= 
+\begin{cases}
+0 & \hbox{ if row 1 } \\
+1 & \hbox{ if row 2 } \\
+-1 & \hbox{ if row 3 }
+\end{cases}
+\end{equation}
+\item $\beta_1$: codes position 1 (columns in latin square):
+
+\begin{equation}
+\beta_1= 
+\begin{cases}
+1 & \hbox{ if pos 1 } \\
+0 & \hbox{ if pos 2 } \\
+-1 & \hbox{ if pos 3 }
+\end{cases}
+\end{equation}
+
+\item $\beta_2$: codes position 2 (columns in latin square):
+
+\begin{equation}
+\beta_2= 
+\begin{cases}
+0 & \hbox{ if pos 1 } \\
+1 & \hbox{ if pos 2 } \\
+-1 & \hbox{ if pos 3 }
+\end{cases}
+\end{equation}
+\item $\tau_1$ codes material A. 
+
+\begin{equation}
+\tau_1= 
+\begin{cases}
+1 & \hbox{ if A } \\
+0 & \hbox{ if B } \\
+-1 & \hbox{ if C }
+\end{cases}
+\end{equation}
+
+\item $\tau_1$ codes material B. 
+
+\begin{equation}
+\tau_2= 
+\begin{cases}
+0 & \hbox{ if A } \\
+1 & \hbox{ if B } \\
+-1 & \hbox{ if C }
+\end{cases}
+\end{equation}
+\end{enumerate}
+
+Now it's just a matter of filling in the design matrix:
+
+\begin{equation}
+\begin{pmatrix}
+\mu & \alpha_1 & \alpha_2 & \beta_1 & \beta_2 & \tau_1 & \tau_2 \\
+1 & 1 & 0 & 1 & 0 & 1 & 0\\
+1 & 1 & 0 & 0 & 1 & 0 & 1\\
+1 & 1 & 0 & -1 & -1 & -1 & -1 \\
+\cline{1-7}
+1 & 0 & 1 & 1 & 0 &  -1 & 1\\
+1 & 0 & 1 & 0 & 1 & 1 & 0\\
+1 & 0 & 1 & -1 & -1 & 0 & 1\\
+\cline{1-7}
+1 & -1 & -1 & 1 & 0 & 0 & 1\\
+1 & -1 & -1 &  0 & 1 & -1 & -1 \\
+1 & -1 & -1 & -1 &-1& 1& 0\\
+\end{pmatrix}
+\end{equation}
+
+The $\tau_k$ are perpendicular or orthogonal to all others. 
+
+Note that if we remove $\mu$, we can add at most one parameter.
+
+\paragraph{Finite fields}
+
+\begin{definition}
+Roughly speaking, a field is a set F along with a pair of operations $+,\cdot$ that act on our field, that satisfy the same properties that $R$ does with respect to $+$ and $\cdot$. Formally, these properties are the following: Closure, identity, Commutativity, Associativity, Inverses, Distributivity. 
+\end{definition}
+
+A finite field just has finite elements.
+
+\begin{proposition}
+Let F be a finite field that contains $n$ elements. Then there is a collection of $n-1$ mutually orthogonal Latin squares.
+\end{proposition}
+
+\begin{theorem}
+If k is of the form $p^r$, p a prime number, and r is a positive integer, then there exists a complete set of $k-1$ mutually orthogonal $k\times k$ Latin squares.
+\end{theorem}
+
+See exercise 1.
+
+### Balanced incomplete block designs
+
+If there are too many treatments to be accomodated in each block, each block contains only a subset of treatments.
+\begin{enumerate}
+\item  All blocks (rows) have same size
+\item No treatment occurs more than once in a block
+\item Each treatment appears the same number of times
+\item Each pair of trmts appears in same no. of blocks
+\end{enumerate}
+
+Let 
+
+\begin{enumerate}
+\item
+b be the number of blocks, 
+\item
+t the number of treatments, 
+\item 
+k the no.\ of units in a block, 
+\item
+r the no.\ of applications of each treatment, 
+\item
+$\lambda$ the no. of times each pair of treatments appears together in a block.
+\end{enumerate}
+Then: 
+
+\begin{equation}
+bk= rt  \hbox{ total no. of observations}
+\end{equation}
+
+\begin{equation}
+r(k-1) = \lambda (t-1)  \hbox{ total no. of block neighbors of a given trtmt}
+\end{equation}
+We can determine the ratio $b:r:\lambda$ given these equations.  
+
+One question that can be asked is: does a BIBD exist for given values of the variables? Another is: what's the smallest BIBD that can be built given some values for the variables? 
+
+### Systematic ways of creating BIBDs
+
+\begin{enumerate}
+\item Unreduced designs:
+For any given t and k, take each possible combination of k out of t in a different block.
+Here,
+
+\begin{equation}
+b={t \choose k} = \frac{t!}{k!(t-k)!}
+\end{equation}
+
+\begin{equation}
+r = {t-1 \choose k-1} \quad \lambda = {t-2 \choose k-2}
+\end{equation}
+
+\item Design based on Latin square
+\begin{enumerate}
+\item Delete last row of Latin sq and then use columns as blocks. If LS is t$\times$t, then we get an unreduced design where k=t-1.
+\item More subtle use of LS: see ex 1.
+If we have k-1 mutually orthogonal $k\times k$ 
+LSs, all superimposed.
+
+If no. of trtmts is $t=k^2$, label the cells, each with a diff. treatment label.
+
+Create blocks of size k as follows:
+
+\begin{itemize}
+\item The first k blocks have trtmts in each of the rows of the square
+\item
+The second k blocks have trtmts in each of the cols of the square
+\item
+The next k blocks contain the treatment acc.\ to the Latin labels
+\item
+The next k to the Greek labels. Etc.
+\end{itemize}
+
+Such a BIBD has:
+
+\begin{equation}
+\begin{split}
+~& t = k^2\\
+~& b = k(k+1)\\
+~& r = k+1\\
+~& \lambda =1\\   
+\end{split}
+\end{equation}
+
+\underline{Example}: See exercise 1, and see pp.\ 29-30 for how to do this.
+
+\underline{Example of adding k+1 additional treatments}: p.\ 30.
+
+\underline{Example of creating complementary design}: p.\ 30.
+
+
+
+
+\end{enumerate}
+\item Complementary designs:
+
+Just replace each block by treatments that did not appear in that block.
+
+\end{enumerate}
+
+
+
+
+## Factorial designs
+
+See later.
+
+## Complete factorial design
+
+If we scale the factors to be -1 and +1, then we cannot include polynomial terms ($x^2$). 
+
+## Blocking Factorial Designs
+
+Specify a block generator; the price paid is that higher order interactions have to be excluded as they'd be identical to block coding.
+
+Example block generator: Blk1: $x_1 x_2 x_3 x_4 x_5$, and Blk2: $x_2 x_3 x_4 x_5$. One has to always consider $Blk1 \times Blk2$, which here is identical to $x_1$, i.e., it's identical to the main effect (bad).
+
+<<>>=
+X<-matrix(c(rep(1,8),
+            c(rep(c(1,-1),each=4,1)),   #x1
+            c(rep(c(-1,1),each=2,2)),#x2
+            c(rep(c(-1,1),4))),        # x3
+            byrow=FALSE,ncol=4)
+
+Z<-cbind(X[,3]*X[,4],X[,2]*X[,4])
+Z1Z2<-Z[,1]*Z[,2]
+
+X<-cbind(X,Z,Z1Z2)
+
+colnames(X)<-c("beta0","x1","x2","x3","z1","z2","z1z2")
+X<-data.frame(X)
+
+blocks<-ifelse(X$z1==1  & X$z2==1,"block1",
+        ifelse(X$z1==1  & X$z2==-1,"block2",
+        ifelse(X$z1==-1 & X$z2==1,"block3",
+        ifelse(X$z1==-1 & X$z2==-1,"block4",
+                     NA))))
+
+Xfinal<-cbind(X,blocks)
+## Diagonal matrix: orthogonal coefs:
+t(as.matrix(X))%*%as.matrix(X)
+@
+
+## Fractional Factorial Design
+
+m factors require $2^m$ observations in a CFD. If we have $n< 2^m$, we can use an FFD.
+
+The approach is to define t Block generators. This gives $2^t$ blocks. For the FFD, we choose just one block.
+
+The number of observations needed now is $n=2^m/2^t=2^{m-t}$. See Example 6.3.3 on p.\ 39 and project for a detailed example.
+
+The **resolution** R of a FFD is defined as the order of the lowest order interaction which
+is confounded with $\beta_0$.
+
+\paragraph{Interesting exam problem}
+
+Show that in an FFD with six predictors $x_1,\dots,x_6$, adding a replicate by just reusing an existing row will be D-optimal.
+
+<<>>=
+library(planor)
+## define factor specifications:
+ex0Fac <- planor.factors(factors=c("A","B","C","D","E","F"),
+                         nlevels=rep(2,6))
+## define model and parameters to be estimated:
+ex0Mod <- planor.model(model=~1+A+B+C+D+E+F, 
+         estimate=~1+A+B+C+D+E+F)
+
+## generate design matrix:
+ex0Key <- planor.designkey(factors=ex0Fac, model=ex0Mod, nunits=8)
+## design matrix:
+ex0Des <- planor.design(ex0Key)
+
+designmat<-as.data.frame((getDesign(ex0Des)))
+## create design matrix:
+m<-matrix(rep(NA,8*6),ncol=6)
+for(i in 1:8){
+  for(j in 1:6){
+    m[i,j]<-ifelse(as.numeric(designmat[i,j])==1,-1,1)
+  }
+}
+
+## The FFD:
+m
+##Note that X^TX is orthogonal:
+t(m)%*%m
+round(solve(t(m)%*%m),digits=1)
+## compute determinant:
+det(t(m)%*%m)
+## add replicate by reusing last row:
+m2<-rbind(m,m[8,])
+
+## Note that orthogonality is lost
+## if we add a single replicate:
+t(m2)%*%m2
+
+## determinant increases: hence D-optimal:
+det(t(m2)%*%m2)
+
+## If the point added is 1's:
+m3<-rbind(m,rep(1,6))
+## This only makes off diagonals +1:
+##t(m3)%*%m3
+## Does not change determinant:
+det(t(m3)%*%m3)
+@
+
+So it would still be D-optimal to add a single data point by just repeating a row:
+
+<<>>=
+m4<-rbind(m3,m3[8,])
+#t(m4)%*%m4
+det(t(m4)%*%m4)
+@
+
+
+## Screening expts
+
+Here, we set up FFDs, but we just aim to compute the estimates without getting error estimates, so saturated designs are allowed.
+
+Example on p.\ 40.
+
+## Plackett and Burman designs
+
+I have skipped this, doesn't seem relevant to anything I do.
+
+## Composite designs
+
+Factors are varied at three levels: -1, 0, 1.
+
+Consists of three sets of contrast specifications:
+
+\begin{enumerate}
+\item 2x2 complete factorial coding (4 rows); FFD can be used, alternatively.
+\item Four `star points' rows:
+\begin{verbatim}
+-1 0
+ 1 0
+ 0 -1
+ 0  1
+\end{verbatim}
+\item Two zero point rows:
+\begin{verbatim}
+0 0
+0 0
+\end{verbatim}
+\end{enumerate}
+
+## Box-Behnken designs
+
+page 43.
+
+## Designs for mixture experiments (simplex lattice, simplex centroid)
+
+Notice that the intercept has to be removed in mixture designs because otherwise the matrix would not be full rank (see equation~\ref{fullrank}):
+
+<<>>=
+m<-matrix(c(1,1,1,1,0,1/2,0,1,1/2),ncol=3)
+lambda<-matrix(c(1,-1,-1))
+m%*%lambda
+@
+
+
+\paragraph{Simplex lattice design}
+
+\underline{Example 1}: An SLD for a mixture with three constituents when a second order model is to be fitted (i.e., d=2).
+
+$\{0,1/2,1\}$
+
+
+Here, we need the following rows: 
+
+\begin{enumerate}
+\item
+(1,0,0), (0,1,0), (0,0,1)
+\item 
+All pairwise combinations of 1/2 and 1/2.
+\end{enumerate}
+
+\underline{Example 2 (old exam)}: An SLD for a mixture with three constituents when a third order model is to be fitted (i.e., d=3).
+
+$\{0,1/3,2/3,1\}$
+
+Here, we need the following rows: 
+
+\begin{enumerate}
+\item
+(1,0,0), (0,1,0), (0,0,1)
+\item 
+All pairwise combinations of 1/3 and 2/3.
+\item 
+One row of (1/3, 1/3, 1/3).
+\end{enumerate}
+
+\paragraph{Simplex centroid design}
+
+\underline{Example}: SCD for a mixture with three constituents.
+
+$\{0,1/3,1/2,1\}$
+
+Notice that we don't have 2/3 here. So, we get the rows:
+
+\begin{enumerate}
+\item
+(1,0,0) etc.
+\item
+All pairwise 1/2 and 1/2
+\item 
+One row of 1/3, 1/3, 1/3.
+\end{enumerate}
+
+Here, a third order polynomial can be fitted.
+
+## Continuous and exact designs: The General Equivalence Theorem
+
+Considering continuous predictors, let $\Omega$ be the design region, consisting of the set of points $x_1, \dots, x_k$. Suppose we have $n_i$ for $x_i$, so that
+
+$\sum n_i = n$
+
+The design can be summarized as follows. This is an **exact design**:
+
+$\xi = 
+\begin{pmatrix}
+x_1 & x_2 & \dots & x_k\\
+\frac{n_1}{n} & \frac{n_2}{n} & 
+\dots & \frac{n_k}{n}\\
+\end{pmatrix}
+$
+
+More generally, we can define a continuous design by specifying the weights for each x:
+
+$\xi = 
+\begin{pmatrix}
+x_1 & x_2 & \dots & x_k\\
+w_1 & w_2 & 
+\dots & w_k\\
+\end{pmatrix}
+$
+
+The optimality of the design just depends on these weights.
+
+The information matrix of a continuous design:
+
+\begin{equation}
+M(\xi) = \sum_{i=1}^k w_i f(x_i) f(x_i)^T
+\end{equation}
+
+**Example**: Let the exact design be
+
+$\xi=\begin{pmatrix}
+x_1 & x_2 & x_3 \\
+\frac{1}{4} & \frac{1}{2} & \frac{1}{4}\\
+\end{pmatrix}$
+
+Then,
+
+\begin{equation}
+M(\xi) = 
+\frac{1}{4}
+\begin{pmatrix}
+1\\
+x_1\\
+\end{pmatrix}
+\begin{pmatrix}
+1 & x_1\\
+\end{pmatrix}
++
+\frac{1}{2}
+\begin{pmatrix}
+1\\
+x_2\\
+\end{pmatrix}
+\begin{pmatrix}
+1 & x_2\\
+\end{pmatrix}
++
+\frac{1}{4}
+\begin{pmatrix}
+1\\
+x_3\\
+\end{pmatrix}
+\begin{pmatrix}
+1 & x_3\\
+\end{pmatrix}
+\end{equation}
+
+This gives us
+
+\begin{equation}
+M(\xi) = 
+\frac{1}{4}
+\begin{pmatrix}
+1 & x_1\\
+x_1 & x_1^2 \\
+\end{pmatrix}
++
+\frac{1}{2}
+\begin{pmatrix}
+1 & x_2\\
+x_2 & x_2^2 \\
+\end{pmatrix}
++
+\frac{1}{4}
+\begin{pmatrix}
+1 & x_3\\
+x_3 & x_3^2 \\
+\end{pmatrix}
+\end{equation}
+
+The above is the weighted version. One can create a design matrix with a stacked version, with $x_2$ appearing twice:
+
+\begin{equation}
+X=
+\begin{pmatrix}
+1 & x_1 \\
+1 & x_2\\
+1 & x_2\\
+1 & x_3\\
+\end{pmatrix}
+\end{equation}
+
+We end up with $X^T X = M(\xi)$.
+
+The variance of prediction:
+
+\begin{equation}
+d(x, \xi) =  f(x)^T M(\xi)^{-1} f(x)
+\end{equation}
+
+\begin{theorem}
+\underline{The General Equivalence Theorem}:
+
+The following three statements are equivalent
+
+\begin{enumerate}
+\item
+The design $\xi*$ maximizes $\mid M(\xi*) \mid \Leftrightarrow$ D-optimality. 
+\item 
+The design $\xi*$ minimizes max$_{x\in \Omega} d(x,
+\xi)$ G-optimality.
+\item **Key point of GET**
+max$_{x\in \Omega}d(x,
+\xi*)=p$ (number of parameters)
+\end{enumerate}
+\end{theorem}
+
+**Practical implication**: we can identify an optimal design (D- or G-optimal) by determining that the maximum variance of prediction is equal to the number of parameters. If the max variance of prediction is not equal to the number of parameters, then the design is not optimal.
+
+This is convenient because it is often difficult/tedious to prove D- or G-optimality.
+
+**Example (Task 11)**:
+
+Find an optimal design with two observations for the model:
+
+\begin{equation}
+E[Y] = \beta_1 x_1 + \beta_2 x_2
+\end{equation}
+
+Using any pair of points (-1,-1),  (1,-1), (-1,1), (1,1). Determine whether it satisfies the conditions of the GET.
+
+Solution: choose adjacent points (-1,-1),  (1,-1).
+This means that $f(x)^T = (x_1~x_2)$, and 
+
+$X=\begin{pmatrix}
+-1 & -1 \\
+1 & -1 \\
+\end{pmatrix}
+\Rightarrow
+X^T X = 
+\begin{pmatrix}
+-1 & 1 \\
+-1 & -1 \\
+\end{pmatrix}
+\begin{pmatrix}
+-1 & -1 \\
+1 & -1 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 & 0 \\
+0 & 2 \\
+\end{pmatrix}
+$
+
+The inverse is:
+
+$(X^TX)^{-1}=
+\frac{1}{4}
+\begin{pmatrix}
+2 & 0 \\
+0 & 2 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+1/2 & 0 \\
+0 & 1/2 \\
+\end{pmatrix}
+$
+
+So,
+
+$d(x)= n \times f(x)^T (X^TX)^{-1} f(x)
+= 2
+\begin{pmatrix}
+x_1 & x_2\\
+\end{pmatrix}
+\begin{pmatrix}
+1/2 & 0 \\
+0 & 1/2 \\
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+x_2\\
+\end{pmatrix}
+= x_1^2 + x_1^2$
+
+This will be maximal when $x_1^2 = x_2^2 =1$ and then it equals 2, which is equal to the number of parameters, hence optimal.
+
+## Old exam problem: Orthogonality, optimality, centering}\label{centering
+
+Suppose we have a model like
+
+\begin{equation}
+Y_i = \beta_0 + \beta_1 (x_i - \bar{x}) + \epsilon_i
+\end{equation}
+
+\begin{enumerate}
+\item
+Show that $\beta_0$ and $\beta_1$ are orthogonal.
+
+\begin{equation}
+X=
+\begin{pmatrix}
+1 & (x_1-\bar{x})\\
+1 & (x_1-\bar{x})\\
+\vdots & \vdots\\
+\end{pmatrix}
+\end{equation}
+
+So, 
+
+\begin{equation}
+\begin{split}
+X^T X=&
+\begin{pmatrix}
+1 & 1 & \dots \\
+(x_1-\bar{x}) & (x_2-\bar{x}) & \dots \\
+\end{pmatrix}
+\begin{pmatrix}
+1 & (x_1-\bar{x})\\
+1 & (x_2-\bar{x})\\
+\vdots & \vdots\\
+\end{pmatrix}\\
+= &
+\begin{pmatrix}
+n & \sum x_i -n \bar{x}\\
+\sum x_i -n \bar{x} & \sum (x_i -\bar{x})^2\\
+\end{pmatrix}\\
+\end{split}
+\end{equation}
+
+Now, $\sum x_i - n\bar{x}=0$, so orthogonal.
+
+\item Compute estimates of $\beta$:
+Since 
+
+\begin{equation}
+X^T X=
+\begin{pmatrix}
+n & 0\\
+0 & \sum (x_i -\bar{x})^2\\
+\end{pmatrix}
+\end{equation}
+
+the inverse is
+
+\begin{equation}
+(X^T X)^{-1}=
+\frac{1}{n\sum (x_i -\bar{x})^2}
+\begin{pmatrix}
+\sum (x_i -\bar{x})^2 & 0\\
+0 & n\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{1}{n} & 0 \\
+0 & \frac{1}{\sum(x_i - \bar{x})^2}\\
+\end{pmatrix}
+\end{equation}
+
+Since 
+
+\begin{equation}
+X^T Y =
+\begin{pmatrix}
+1 & 1 & \dots \\
+(x_1-\bar{x}) & (x_2-\bar{x}) & \dots \\
+\end{pmatrix}
+\begin{pmatrix}
+Y_1 \\
+Y_2\\
+\vdots\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sum y_i \\
+\sum(x_i-\bar{x})y_i \\
+\end{pmatrix}
+\end{equation}
+
+So, 
+
+\begin{equation}
+(X^TX)^{-1}X^T Y=
+\begin{pmatrix}
+\frac{1}{n} & 0 \\
+0 & \frac{1}{\sum(x_i - \bar{x})^2}\\
+\end{pmatrix}
+\begin{pmatrix}
+\sum y_i \\
+\sum(x_i-\bar{x})y_i \\
+\end{pmatrix}
+\end{equation}
+
+\item Give variances of $\beta$: just compute $\sigma^2 (X^TX)^{-1}$.
+
+\item Derive the standardized variance of prediction at doze $x_0$:
+
+\begin{equation}
+\begin{split}
+d(x_0) =& n 
+\begin{pmatrix}
+1 & (x_0 - \bar{x})
+\end{pmatrix}
+\begin{pmatrix}
+\frac{1}{n} & 0 \\
+0 & \frac{1}{\sum(x_i - \bar{x})^2}\\
+\end{pmatrix}
+\begin{pmatrix}
+1 \\
+(x_0 - \bar{x})\\
+\end{pmatrix}\\
+= & 
+n
+\begin{pmatrix}
+\frac{1}{n} \\
+\frac{(x_0 - \bar{x})^2}{\sum(x_i - \bar{x})^2}\\
+\end{pmatrix}\\
+= & 
+1 + \frac{(x_0 - \bar{x})^2}{\sum(x_i - \bar{x})^2/n}
+\end{split}
+\end{equation}
+
+\item Let n=4, and measurements be x=2,2.3,2.7,3. The design region is the interval [2,3].
+
+An alternative design that's superior:
+
+<<>>=
+X<-matrix(c(1,1,1,1,2,2.3,2.7,3)-
+            c(0,0,0,0,2.5,2.5,2.5,2.5),
+          ncol=2)
+
+## Determinant:
+det(t(X)%*%X)
+
+## alternative design:
+X1<-matrix(c(1,1,1,1,-2,-1,1,2),ncol=2)
+
+## D-optimality better:
+det(t(X1)%*%X1)
+@
+
+d(x) in old design would be maximally 1.72, but the new one is 2.6.
+\end{enumerate}
+
+# Sampling theory
+
+## Finite population theory
+
+Assume a finite population of N units. 
+
+\begin{enumerate}
+\item The true values (constants)
+$X_1, \dots, X_N$
+\item 
+Let the sample be of size n $x_1,\dots,x_n$
+\item
+Population characteristics (examples)
+\begin{enumerate}
+\item 
+Total $X_{tot}=\sum_{i=1}^N X_i$
+\item
+Mean $\bar{X} = X_{tot}/N$
+\item 
+Proportion with attribute C
+$P=\frac{1}{N}\sum \chi_i$ and $\chi_i = 1$ if -th unit has C, 0 if not.
+\item Ratio of two totals or means:
+
+$R=X_{tot}/Y_{tot}$
+
+$\bar{R}=\bar{X}/\bar{Y}$
+
+(e.g., $X_{tot}$ liquid assets in a company and $Y_{tot}$ all assets in a company)
+
+\item Population variance
+
+$S^2= \frac{1}{N-1} \sum (X_i - \bar{X})^2$
+\item Sampling fraction: $f = n/N$
+\end{enumerate}
+\end{enumerate}
+
+Note that we do not try to construct and validate models for $X_i$; these values are fixed. 
+
+## Simple random sampling: definitions and properties
+
+To draw an SRS from a list using random numbers, label each X as $1,\dots, N$, and then draw a random sequence of $n$ numbers, ignoring repeats. There are ${n \choose N}=\frac{N!}{n!(N-n)!}$ ways to choose the **samples**, and the probability of each sample being draw is $1/{n \choose N}$. 
+
+\underline{Properties}:
+
+\begin{enumerate}
+\item
+$P(x_i = X_r) = 1/N$ for each i.
+
+Justification:
+
+Suppose that the finite population is $X_1, X_2, X_3, X_4, X_5, X_6, X_7$.
+
+The total no.\ of ordered samples: $7\times 6 \times 5$. 
+
+The total no.\ of ordered samples with $x_2 = X_6$: $6 \times 5$.
+
+\begin{verbatim}
+---------------------
+| x1      x2     x3 |
+---------------------
+|     |       |     |
+---------------------
+\end{verbatim}
+
+$P(x_2 = X_6) = \frac{6 \times 5}{7\times 6 \times 5}=\frac{1}{7}$.
+
+\item 
+$E[x_i] = \bar{X}$ for each i.
+
+Justification: Let $x_1, \dots, x_7$ be discrete values. Then
+
+\begin{equation}
+\begin{split}
+E[x_j] =& \sum_{j=1}^{N} x_i P(x_i = x_j)\\
+=& \sum_{j=1}^{N} x_i \frac{1}{N} \\
+=& \bar{x}\\
+ \end{split}
+\end{equation}
+
+
+\item  $Var(x_i) = (N-1)S^2/N$.
+
+Justification:
+
+Recall that $\sum (x_i - \bar{x})^2 = \sum x_i^2 - N \bar{x}^2$.
+
+\begin{framed}
+\begin{equation}
+\begin{split}
+\sum (x_i - \bar{x})^2 =& \sum (x_i^2 - 2 \bar{x}x_i + \bar{x}^2)\\
+=& N\bar{x}^2 + \sum x_i^2 - 2\bar{x} N \bar{x}\\
+=& \sum x_i^2 - N\bar{x}^2
+\end{split}
+\end{equation}
+\end{framed}
+
+\begin{equation}
+\begin{split}
+Var(x_i) =& E[x_i^2] - (E[x_i])^2\\
+=& \sum_{j=1}^N x_j^2 p(x_i = x_j) - \bar{x}^2\\
+=& \frac{1}{N} \sum_{j=1}^N(x_j^2 - N\bar{x}^2) =  \frac{1}{N} \sum_{j=1}^n(x_i - \bar{x})^2\\
+\end{split}
+\end{equation}
+
+Recall that $S^2 = \frac{1}{N-1} \sum (x_i - \bar{x})^2$.
+
+$Var(x_i) = \frac{1}{N} \sum_{j=1}^n(x_i - \bar{x})^2 = \frac{(N-1)}{N} S^2$.
+
+\item
+The joint probability $P(x_i = X_r, x_j = X_s) = \frac{1}{N(N-1)}$ for $i\neq j$ and $r\neq s$. 
+
+Justification: 
+
+Total no.\ of ordered samples:  $7 \times 6 \times 5$.
+
+Total no.\ of ordered samples $x_2 = X_5, x_5=
+X_6$: $5$.
+
+So, $P(x_i = X_r, x_j = X_s) = \frac{5}{7 \times 6 \times 5} = \frac{1}{N(N-1)}$.
+
+\item $Cov(x_i, x_j) = -S^2/N$, for $i\neq j$.
+
+Also, for two sequential samples, $Cov(\bar{x}_1, \bar{x}_2) = -S^2/N$
+
+
+Intuitively, the correlation is negative: if we have a finite population, drawing a high value means that the average of the others will go down---negative correlation. 
+
+Justification:
+
+\begin{framed}
+Notice that $\sum_{i=1}^N x_i \sum_{j=1}^N x_j$ can we written as
+
+$\sum_{i=1}^N x_i (x_1 + \dots + x_N)= \sum x_i^2 + \sum_{i=1}^N \sum_{j=1}^N x_i x_j$, where $j \neq i$.
+
+A trick: whenever we see $\sum_{i=1}^N \sum_{j=1}^N x_i x_j$, we can rewrite this as: $(N\bar{x})^2 - \sum_{i=1}^N x_i^2$, where $j \neq i$.
+\end{framed}
+
+We have to work out $Cov(x_i, x_j)$.
+
+\begin{equation}
+\begin{split}
+Cov(x_i,x_j) =& E[x_i x_j] - E[x_i]E[x_j]\\
+=& \sum_{r=1}^N \sum_{s=1}^N x_r x_s p(x_i = x_r, x_j = x_s) - \bar{x}^2 \\
+=& \frac{1}{N(N-1)} \sum_r \sum_s x_r x_s  - \bar{x}^2 \\
+\end{split}
+\end{equation}
+
+We have already established that 
+$p(x_i = x_r, x_j = x_s) = \frac{1}{N(N-1)}$.
+
+\begin{framed}
+We now use this trick: whenever we see $\sum_{i=1}^N \sum_{j=1}^N x_i x_j$, we can rewrite this as: $(N\bar{x})^2 - \sum_{i=1}^N x_i^2$, where $j \neq i$.
+\end{framed}
+
+
+\begin{equation}
+\begin{split}
+Cov(x_i,x_j) =& \frac{1}{N(N-1)} (\sum_r \sum_s x_r x_s  - \bar{x}^2) \\
+=& 
+\frac{1}{N(N-1)}
+[(N\bar{x})^2 - \sum_{i=1}^N x_i^2] 
+- \bar{x}^2]\\
+=& \frac{1}{N(N-1)}
+[(N\bar{x})^2 - \sum_{i=1}^N x_i^2 
+- N(N-1)\bar{x}^2]]\\
+=& \frac{1}{N(N-1)}
+[\cancel{(N\bar{x})^2} - \sum_{i=1}^N x_i^2 
+- \cancel{(N\bar{x})^2} + N\bar{x}^2]\\
+\end{split}
+\end{equation}
+
+Basically, what happened above is that the last term $\bar{x}^2$ is the same as $\frac{N(N-1)}{N(N-1)}\bar{x}^2$. This allows us to simplify. 
+
+Now we can write:
+
+\begin{equation}
+\begin{split}
+\frac{1}{N(N-1)} (-1) [\sum (x_i^2 - N\bar{x}^2)] =& \frac{1}{N} (-1) \frac{[\sum (x_i^2 - N\bar{x}^2)]}{N-1}\\
+=& - \frac{1}{N} S^2
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+## Best linear unbiased estimator (BLUE) of bar x
+
+Under SRS, the BLUE of $\bar{X}$ is $\bar{x} =  \sum_{i=1}^n x_i/n$.
+
+Rewrite $\bar{x}=\sum_{i=1}^n x_i/n = \sum c_i x_i$, where $c_i = 1/n$. 
+Of all estimators $t = \sum c_i x_i$, for constants $c_i$, such that $E[t]=\bar{X}$, the estimator with $c_i = 1/n$ has smallest variance.
+
+Proof:
+
+To be unbiased, $E[t]=\bar{X}$. So, the constraint is $\sum c_i =1$.
+
+\begin{framed}
+Recall: if variables are correlated: 
+
+\begin{equation}
+\begin{split}
+~& Var(\sum X_i) =\\
+~& \sum_i \sum_j Cov(X_i, X_j) = \\
+~& \sum Var(X_i) + 2\sum \sum Cov(X_i, X_j)\\
+\end{split}
+\end{equation}
+
+So, if we have $\sum c_i X_i$, 
+
+\begin{equation}
+\begin{split}
+~& Var(\sum c_i X_i) =\\
+~& \sum_i \sum_j Cov(X_i, X_j) = \\
+~& \sum c_i^2 Var(X_i) + \sum \sum c_i c_j Cov(X_i, X_j)
+\end{split}
+\end{equation}
+\end{framed}
+
+\begin{framed}
+Recall that $Var(x_i) = \frac{N-1}{N} \sum (X_i-\bar{X})^2 =  \frac{N-1}{N} S^2$.
+
+Also recall two important identities we will use below:
+
+\begin{equation}
+\sum (x_i - \bar{x})^2 = \sum x_i^2 - N \bar{x}^2
+\end{equation}
+
+\begin{equation}
+(\sum a_i)^2 = \sum a_i \sum a_j = \sum a_i^2 + \sum_i \sum_j a_i a_j
+\end{equation}
+
+which means that:
+\begin{equation}
+\sum_i \sum_j a_i a_j = (\sum a_i)^2  - \sum a_i^2 
+\end{equation}
+\end{framed}
+
+Now we can compute Var(t):
+
+\begin{equation}
+\begin{split}
+Var(t) = & Var(\sum c_i x_i )\\
+= & \sum c_i^2 Var(x_i) + \sum_i \sum_j c_i c_j Cov(x_i x_j)\\
+= &  \frac{N-1}{N} S^2 \sum_i c_i^2 - \frac{S^2}{N}\sum_i \sum_j c_i c_j  \\
+\end{split}
+\end{equation}
+
+Now we use the second fact in the frame above to rewrite:
+
+$\frac{S^2}{N}\sum_i \sum_j c_i c_j = \frac{S^2}{N} (\sum (c_i)^2  - \sum c_i^2)$
+
+\begin{equation}
+\begin{split}
+~& \frac{N-1}{N} S^2 \sum_i c_i^2 - \frac{S^2}{N}\sum_i \sum_j c_i c_j  = \\
+~&  \frac{N-1}{N} S^2 \sum_i c_i^2 -  \frac{S^2}{N} ((\sum c_i)^2  - \sum c_i^2)=  \\
+~& \frac{N-1}{N} S^2 \sum_i c_i^2 -\frac{S^2}{N} (\sum c_i)^2 + \frac{S^2}{N}\sum c_i^2 =\\
+~& S^2 \sum_i c_i^2 - \frac{S^2}{N} \sum_i c_i^2 -\frac{S^2}{N} \sum (c_i)^2 + \frac{S^2}{N}\sum c_i^2\\
+~& S^2 \sum_i c_i^2  -\frac{S^2}{N} \\
+\end{split}
+\end{equation}
+
+The last line holds because two terms cancel out, and  $\frac{S^2}{N} (\sum c_i)^2=\frac{S^2}{N}$ because $\sum c_i=1$. 
+
+
+So $Var(t)= S^2 \sum_i c_i^2  -\frac{S^2}{N}$.
+
+What estimator can give us minimum variance?
+Notice that if we write:
+
+$S^2 (\sum_i (c_i-\frac{1}{n})^2)$, expanding this out we would get two extra terms: $-2\frac{\sum c_i}{n}  + n (\frac{1}{n})^2$. We can cancel these out by simply adding their negation, to get:
+
+\begin{equation}
+S^2 (\sum_i (c_i-\frac{1}{n})^2 + 2\frac{\sum c_i }{n}  - (\frac{1}{n})) 
+\end{equation}
+
+So we write:
+
+\begin{equation}
+Var(t)= S^2 (\sum_i (c_i-\frac{1}{n})^2 + 2\frac{\sum c_i}{n}  - \frac{1}{n})  -\frac{S^2}{N}
+\end{equation}
+
+It is immediately obvious that this term is minimized if $c_i = 1/n$. If we set $c_i = 1/n$, then $Var(t)=Var(\bar{x}) = (1-\frac{n}{N}) \frac{S^2}{n}$.
+
+So: $var(\bar{x})$ depends on (i) population variance $S^2$, (ii)  sample size n, (iii) sampling fraction $f=n/N$.
+
+1-f is the finite population correction (FPC), and for small n relative to N, gives 1, therefore the usual estimator for the sample means' sd (standard error).
+
+We can ignore the FPC when $f\leq 0.05$ and in many cases when $\leq 0.1$.
+
+## Estimation of population variance
+
+When $S^2$ unknown, we estimate it from
+
+\begin{equation}
+s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2
+\end{equation}
+
+so that we can estimate the standard error:
+
+\begin{equation}
+Var(\bar{x}) =(1-\frac{n}{N}) \frac{s^2}{n}
+\end{equation}
+
+Under SRS, $E[s^2] = S^2$.
+
+Proof: 
+
+\begin{equation}
+\begin{split}
+E[(n-1)s^2] =& E[\sum (x_i - \bar{X})^2] \\
+=& E[\sum (x_i-\bar{X} + \bar{X} - \bar{x})^2]\\
+\end{split}
+\end{equation}
+
+Set $z_i = x_i-\bar{X}$, and $z=\bar{X} - \bar{x}$. Then we have
+
+\begin{equation}
+\begin{split}
+E[(n-1)s^2] =& E[\sum (z_i - z_2)^2] \\
+=& E[\sum (z_i - z)^2]\\
+=& E[\sum (z_i^2 - nz)^2]\\
+=& E[\sum (z_i^2 - nz)^2]\\
+=& E[\sum (x_i-\bar{X})^2 - n(\bar{X} - \bar{x})^2]\\
+\end{split}
+\end{equation}
+
+The first squared term is $Var(x_i)$ and the second one is $Var(\bar{x})$. So:
+
+\begin{equation}
+\begin{split}
+~& E[\sum (x_i-\bar{X})^2 - n(\bar{X} - \bar{x})^2] = \\
+~& \frac{n(N-1)}{N}S^2 - n (1- \frac{n}{N})\frac{S^2}{n} = \\
+~& (n-1) S^2\\
+\end{split}
+\end{equation}
+
+It follows that since $E[(n-1)s^2] = (n-1)S^2$, $E[s^2] = S^2$.
+
+## Confidence intervals for $\bar{X}$
+
+Under SRS $\bar{x} \sim N(\bar{X}, (1-f)\frac{S^2}{n}$ (approximately).
+
+If the population's pdf has skewness, CLT guarantees that $\bar{x}$ is normally distributed if $n$ is large enough. The problem is, if there is skewness, how large should $n$ be? **Fisher's measure of skewness**
+ says: choose n such that $n>25 G_1^2$.
+ 
+ \begin{equation}
+ G_1 = \frac{1}{N\sigma^3} \sum_{i=1}^N (X_i - \bar{X})^3
+ \end{equation}
+ 
+This rule ensures that the 95\% CI will have the right coverage properties. 
+
+The usual stuff follows:
+
+\begin{equation}
+\frac{\bar{x}-\bar{X}}{\sqrt{(1-f)S^2/n}} \sim N(0,1) 
+\end{equation}
+ 
+If S is unknown,  
+ 
+\begin{equation}
+\frac{\bar{x}-\bar{X}}{\sqrt{(1-f)s^2/n}} \sim t_{n-1} 
+\end{equation}
+ 
+ So we have $\bar{x} \pm t_{n-1,0.975} \sqrt{(1-f)s^2/n}$.
+ 
+ If $n>60$, 
+
+\begin{equation}
+\frac{\bar{x}-\bar{X}}{\sqrt{(1-f)s^2/n}} \sim N(0,1) 
+\end{equation}
+
+ So we have $\bar{x} \pm z_{0.975} \sqrt{(1-f)s^2/n}$.
+
+## Choice of sample size n
+
+Given: width $d$ of a $100(1-\alpha)$\% CI for $\bar{X}$. 
+Then,
+
+\begin{equation}
+d = 2z \sqrt{(1-\frac{n}{N})\frac{S^2}{n}}
+\end{equation}
+
+where $z=z_{1-\alpha/2}$
+
+solve for n:
+
+\begin{equation}
+n \geq \frac{N}{1+N(\frac{d}{2Sz})^2}
+\end{equation}
+
+$S^2$ comes from a pilot survey or from previous work.
+
+## Estimation of a proportion P
+
+\begin{equation}
+\chi_i= 
+\begin{cases}
+1 & \hbox{ if unit i has characteristic C } \\
+0 & \hbox{ otherwise } \\
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\bar{x} = \frac{r}{n} \quad E[p]=E[\bar{x}] = \bar{X} = \frac{R}{N}
+\end{equation}
+
+\begin{tabular}{|c|c|}
+\hline
+ & Unbiased est.\\
+\hline 
+$Var(p)=(1-f)S^2/n$ & $Var(p) =(1-n/N)p(1-p)/(n-1) $\\
+$S^2 = NPQ/(N-1)$ & $s^2 = npq/(n-1)$\\
+\hline
+\end{tabular}
+
+**Confidence intervals for P**
+
+stoppedhere
+
+$p\pm z \sqrt{(1-f)PQ/n} \quad PQ = npq/(n-1)$
+
+So: $p\pm z \sqrt{(1-f)pq/(n-1)}$
+
+\textbf{Sample size for p given CI width d}
+
+$d= 2 z \sqrt{(1-f) PQ/n}$, taking PQ=1/4 (the largest possible value).
+
+# Stratified sampling
+
+Main advantage of stratification: when within strata variance is smaller than between strata variance. (i always ranges over strata)
+
+\begin{equation}
+\bar{x}_{st} = \frac{1}{N}\sum N_i \bar{x}_i
+\end{equation}
+
+
+\begin{equation}
+var(\bar{x}_{st})  = \sum (\frac{N_i}{N})^2 \frac{(1-n_i/N_i)}{n_i} S_i^2
+\end{equation}
+
+## Choice of sample size: Stratified Sampling
+
+### Proportional allocation
+
+Size of SRS within a stratum is proportional to stratum size.
+
+$N_i/N$
+
+Variance (p.\ 76):
+
+$$
+Var(\bar{x}_{st(p)}) = 
+\frac{(1-f)}{nN}\sum_{i=1}^l N_i S_i^2
+\quad f=n/N
+$$
+
+
+
+### Neyman allocation
+
+Let n be entire sample size.
+
+\begin{equation}
+n_i = n \frac{N_i S_i}{\sum N_i S_i}
+\end{equation}
+
+Variance:
+
+$$
+Var(\bar{x}_{st})=\frac{1}{N^2}\frac{(\sum N_i S_i)^2}{n} - \frac{\sum N_i S_i^2}{N^2}
+$$
+
+\textbf{Neyman allocation is better if there is greater variability in stratum variances}. 
+
+\paragraph{Minimizing variance within fixed cost}
+
+The optimal size of $n_i$ from the i-th stratum is 
+
+\begin{equation}
+n_i \propto \frac{N_i S_i}{\sqrt{c_i}}
+\end{equation}
+
+For total cost C, the optimal \textbf{total} number of observations is
+
+\begin{equation}
+n = \frac{(C-c_0) \sum \frac{N_i S_i}{\sqrt{c_i}} }{\sum N_i S_i \sqrt{c_i}}
+\end{equation}
+
+If $c_i$ is fixed, $n_i$ is computed using Neyman allocation, and 
+
+\begin{equation}
+n = \frac{C-c_0}{c}
+\end{equation}
+
+The variance in this case is:
+
+\begin{equation}
+Var(\bar{x}_{st}) = \frac{1}{N^2} \frac{(\sum N_i S_i)^2}{n} - \frac{\sum N_i S_i^2}{N^2}
+\end{equation}
+
+Generally, we should take a larger sample from a stratum if (a) it is larger, (b) if a stratum is more variable internally, (c) it is cheaper to sample from.
+
+## Comparison of Proportional vs Optimal Allocation
+
+If the variance between strata variances is large, then optimal (Neyman) allocation is better. See p.\ 78 for some derivations of this result.
+
+## Stratification after sampling
+
+Example: if men and women are in 50-50 distribution in population, and we get two samples, one with 17 men and 87 women, the two means can be weighted by population proportions:
+
+\begin{equation}
+\bar{x}_w = \sum (\frac{N_i}{N}) \bar{x}_i
+\end{equation}
+
+## Taking SRSs in two stages
+
+Suppose we have taken samples in two stages (sizes $n_1$ and $n_2$, so total sample size is $n_1 + n_2 = n$), and have obtained $\bar{x}_1$, $\bar{x}_2$, and $s_1^2$ and $s_2^2$.
+
+Goal: work out overall sample mean and variance.
+
+\underline{Mean}:
+Use the fact that $n_i \bar{x}_i = \sum x_i$.
+
+\begin{equation}
+\bar{x} = \frac{n_1 \bar{x}_1 + n_2 \bar{x}_2}{n}
+\end{equation}
+
+\underline{Variance}:
+
+\begin{equation}
+(n-1)s^2 =  \sum_{i=1}^n (x_i - \bar{x})^2 = -n\bar{x}^2 + \sum_{i=1}^n x_i^2
+\end{equation}
+
+So, to get the sample variance for all n observations, we need $\sum_{i=1}^{n}x_i^2$, and we can obtain $\sum_{i=1}^{n_1}x_i^2$ from $s_1^2$, and $\sum_{i=n_1+1}^{n}x_i^2$ from $s_2^2$.
+
+Let sample 1's mean and sample size be $\bar{x}_1$ and $n_1$, and the data points be $x_{1i}$, $i=1,\dots,n_1$. And for sample 2: 
+$\bar{x}_2$ and $n_2$, and the data points be $x_{2i}$, $i=1,\dots,n_2$.
+
+\begin{equation}
+(n_1 - 1)s_1^2 = \sum (x_{1i}-\bar{x}_1)^2 = -n_1\bar{x}_1^2+\sum x_{1i}^2
+\end{equation}
+
+So, $\sum x_{1i}^2= (n_1 - 1)s_1^2 + n_1\bar{x}_1^2$.
+
+Similarly, 
+
+\begin{equation}
+(n_2 - 1)s_2^2 = \sum (x_{2i}-\bar{x}_2)^2 = -n_2\bar{x}_2^2+\sum x_{2i}^2
+\end{equation}
+
+So, $\sum x_{2i}^2= (n_2 - 1)s_2^2 + n_2\bar{x}_2^2$.
+
+Since $\sum x_{1i}^2+\sum x_{2i}^2= \sum x_i^2$, we can write 
+
+\begin{equation}
+(n-1)s^2 = -n\bar{x}^2 + \sum_{i=1}^n x_i^2 = \sum x_{1i}^2+\sum x_{2i}^2 -n\bar{x}^2
+\end{equation}
+
+Expanding out the RHS and solving for $s^2$:
+
+\begin{equation}
+s^2 = \frac{(n_1 - 1)s_1^2 + n_1\bar{x}_1)^2 + (n_2 - 1)s_2^2 + n_2\bar{x}_2)^2 -n\bar{x}^2}{n-1}
+\end{equation}
+
+Pretty neat!
+
+# Cluster sampling
+
+Divide population into $\ell$ strata, take SRS of strata, and measure all units in those strata.
+Each stratum is a cluster.
+
+Gain: economical, no gain in precision.
+
+Let there be L clusters, each of size K.
+
+\begin{equation}
+\bar{x}_{cl} = \frac{\ell K}  \sum_{i=1}^\ell 
+\sum_{j=1}^K x_{ij}
+\quad
+var(\bar{x}_{cl}) = \frac{1-f}{\ell} 
+\frac{1}{L-1} \sum_{i=1}^L (\bar{X}_i - \bar{X})^2
+\end{equation}
+
+where $f=\frac{\ell}{L} = \frac{\ell K}{LK}$, the sampling fraction.
+
+\textbf{Comparison with SRS and stratified sampling}: In SRS, 
+
+\begin{equation}
+var(\bar{x}) = (1-\frac{\ell}{L}) \frac{S^2}{\ell K}
+\end{equation}
+
+\begin{tabular}{|c|c|c|}
+\hline
+Within cluster var low & Betw. cluster var. high & 
+$\Rightarrow$ SRS\\
+Within cluster var high & Betw. cluster var. low & 
+$\Rightarrow$ CS\\
+\hline
+\end{tabular}
+
+Cf.\ Stratified sampling is better than SRS when
+strata are homogeneous (within strata var is small) but well separated (large difference between stratum means).
+
+
+# Capture-recapture sampling
+
+Goal is to estimate population size.
+
+Method:
+
+\begin{enumerate}
+\item Draw a random sample of size $n$ (without replacement) from the population. Each member of the sample is tagged.
+\item Release all members back to population.
+\item Draw a second random $m$ (without replacement), observe the number of tagged individuals $r$. 
+\end{enumerate}
+
+The Peterson estimator (or Lincoln index) of population size N:
+
+\begin{equation}
+\hat N_p = \frac{nm}{r} 
+\end{equation}
+
+This assumes that n/N is similar to r/m. 
+
+If N is large relative to m, we can assume that
+
+\begin{equation}
+r \sim Bin(m,n/N)
+\end{equation}
+
+Then, 
+
+\begin{equation}
+Var(\hat N_p) = \frac{mn^2(m-r)}{r^3}
+\end{equation}
+
+An alternative is the Chapman estimator, 
+which is unbiased for $n+m>N$:
+
+\begin{equation}
+\hat N_p = \frac{(n+1)(m+1)}{r+1}-1
+\quad
+Var(\hat N_p)=\frac{(n+1)(m+1)(n-r)(m-r)}{(r+1)^2(r+2)}
+\end{equation}
+
+This method assumes that
+
+\begin{enumerate}
+\item 
+The population size does not change between first and second samples.
+\item 
+All members of the population are equally likely to be captured, there are no trap shy or trap happy members.
+\end{enumerate}
+
+# Ordered populations
+
+Suppose the population are numbered from 1 to N. We take a sample of size n, and observe the maximum number in our sample to be m. Goal: estimate N.
+
+\begin{equation}
+\hat N = M \frac{n+1}{n} - 1
+\end{equation}
+
+# Sensitivity Analysis
+
+## Some basic results for computing covariance
+
+\begin{enumerate}
+\item
+Let $\bar{x}_i$ be vectors:
+
+\begin{equation}
+Var(\bar{x}_1 - \bar{x}_2) = var(\bar{x}_1) + var(\bar{x}_2) - 2 Cov(\bar{x}_1,\bar{x}_2)
+\end{equation}
+
+Note that $Cov(\bar{x}_1,\bar{x}_2)$ would be the matrix
+
+$$
+\begin{pmatrix}
+Cov(x_1) & 0 \\
+0 & Cov(x_2)\\
+\end{pmatrix}
+$$
+
+where $Cov(x_1)$ is the covariance between the \textit{components} of $x_1$.
+
+\item The sum of two RVs:
+
+\begin{equation}
+Var(X_1 + X_2) = var(X_1) + var(X_2) + 2 Cov(X_1,X_2)
+\end{equation}
+
+More generally:
+
+\begin{equation}
+Var(aX_1 + bX_2) = a^2 var(X_1) + b^2 var(X_2) + 2ab Cov(X_1,X_2)
+\end{equation}
+
+This generalizes to arbitrary numbers of terms:
+
+\begin{equation}
+\begin{split}
+~& Var(aX_1 + bX_2+cX_3) = a^2 var(X_1) + b^2 var(X_2)  \\
++& 2ab Cov(X_1,X_2) +
+2ac Cov(X_1,X_3) + 2bc Cov(X_2,X_3)
+\end{split}
+\end{equation}
+
+\item Covariance of X and Y:
+
+\begin{equation}
+Cov(X,Y)=E[XY]-E[X]E[Y]
+\end{equation}
+
+\begin{equation}
+Cov(aX+b,Y)= aCov(X,Y)
+\end{equation}
+
+\begin{equation}
+Cov(aX+bY+cZ,W)= Cov(aX,W)+Cov(bY,W)+Cov(cZ,W)
+\end{equation}
+\end{enumerate}
+
+\begin{equation}
+\begin{split}
+Cov(X,XY) =& E(X^2Y) - E(X) E(XY) = E(X^2) E(Y) - (E(X))^2 E(Y)\\
+=& E(Y). {E(X^2) - (E(X))^2} \hbox{ by indep.}\\
+=& E(Y).var(X)\\
+\end{split}
+\end{equation}
+
+
+## Expectation and variance: Some unfamiliar results
+
+\begin{equation}
+E[X^2] = Var(X) + E[X]^2
+\end{equation}
+
+\begin{equation}
+E[XY] = E[X]E[Y] \hbox{ assuming independence}
+\end{equation}
+
+\begin{equation}
+Var(X^2) = E[X^4] - E[X^2]^2
+\end{equation}
+
+where $E[X^4] = \sigma^2 (\sigma^2)^2$ and $E[X^2]^2=(\sigma^2)^2$.
+
+\begin{equation}
+Var(XY) = E[X^2Y^2] - E[XY]^2 
+\quad E[X^2Y^2] = (\sigma_X^2 + \mu_X^2)(\sigma_Y^2 + \mu_Y^2)
+\end{equation}
+
+More generally (for indep.\ RVs):
+
+\begin{equation}
+\begin{split}
+Var(X_1\dots X_n) =& E[(X_1\dots X_n)^2] - (E[X_1\dots, X_n])^2\\
+=& E[X_1^2 \dots X_n^2] - (E[X_1]\dots E[X_n])^2\\
+=& E[X_1^2] \dots E[X_n^2] - (E[X_1]^2\dots E[X_n]^2)\\
+=& \prod_{i=1}^n (Var(X_1) + E[X_i]^2) - \prod_{i=1}^n (E[X_i])^2\\
+\end{split}
+\end{equation}
+
+
+
+The variance of a uniform distribution: $\frac{(\beta-\alpha)^2}{12}$.
+
+
+
+## Main effect index
+
+The \textbf{main effect index} of input $X_i$ is defined as
+
+\begin{equation}
+\frac{Var_{X_i}(E[Y\mid X_i])}{Var(Y)}
+\end{equation}
+
+Application: given a function like
+
+\begin{equation}
+Y = 1.1 x_1 + x_2 + x_1 x_2 + x_3^3
+\end{equation}
+
+If we have \textbf{one} shot at learning about one of the inputs, which one should it be? 
+Method: find the main effect (ME) index of each RV, and then choose the one with the largest index. 
+
+If we want to learn which of \textbf{two} inputs we should try to learn about, compute the ME index conditioning Y on pairs of RVs ($X_1, X_2$ etc).
+
+Let $X_1 \sim N(0,4)$, $X_2 \sim U(-4,4)$ and $X_3 \sim N(0,3)$.
+
+If we have to choose one variable to measure, we should choose the one with the highest main effect index. So compute, for one input:
+
+\begin{enumerate}
+\item $Var([Y\mid X_1])$
+\item $Var([Y\mid X_2])$
+\item $Var([Y\mid X_3])$
+\end{enumerate}
+
+For two inputs, compute:
+
+\begin{enumerate}
+\item $Var([Y\mid X_1, X_2])$
+\item $Var([Y\mid X_1, X_3])$
+\item $Var([Y\mid X_2, X_3])$
+\end{enumerate}
+
+
+\textbf{See task 18 solution}.
+
+\end{multicols}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+

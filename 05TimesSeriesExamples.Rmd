@@ -1,0 +1,586 @@
+# Time series primer in R
+
+```{r}
+library(astsa)
+data(jj)
+str(jj)
+
+time(jj)
+cycle(jj)
+plot(jj, ylab="Earnings per Share", main="J & J")   
+
+## has trend:
+plot(jj, type="o", col="blue", lty="dashed")
+
+
+
+## differencing after log: makes it stationary:
+plot(diff(log(jj)), main="logged and diffed") 
+
+## moving average:
+k = c(.5,1,1,1,.5)            # k is the vector of weights
+(k = k/sum(k))       
+fjj = filter(jj, sides=2, k)  
+plot(jj)
+## filtered MA:
+lines(fjj, col="red")         # adds a line to the existing plot
+
+## detrending using MA:
+plot(jj-fjj)
+
+## decomposition:
+str(decompose(jj))
+```
+
+```{r}
+## make annual time series:
+(zardoz = ts(rnorm(48), start=c(2293,6), frequency=12))
+## extract part of object:
+(oz = window(zardoz, start=2293, end=c(2295,12)))
+```
+
+Plotting fake data:
+
+```{r}
+x = -5:5                  # sequence of integers from -5 to 5
+y = 5*cos(x)              # guess
+par(mfrow=c(3,2))         # multifigure setup: 3 rows, 2 cols
+#---  plot:
+plot(x, main="plot(x)")
+plot(x, y, main="plot(x,y)")
+#---  plot.ts:
+plot.ts(x, main="plot.ts(x)")
+plot.ts(x, y, main="plot.ts(x,y)")
+#---  ts.plot:
+ts.plot(x, main="ts.plot(x)")
+ts.plot(ts(x), ts(y), col=1:2, main="ts.plot(x,y)")
+```
+
+
+
+
+
+# Problem 1
+
+```{r fig=TRUE}
+dir<-"/Users/shravanvasishth/Dropbox/MScStatistics/2014-2015/MAS6011/Semester2/Data/"
+whisk<-read.table(paste(dir,"Whisk.txt",
+                        sep=""))
+whisk_ts<-ts(whisk,start=c(1980),end=1987,
+             frequency=12)
+ts.plot(whisk_ts,ylab="hectoliters of whiskey per month",xlab="month")
+## oscillating  ACF: seasonality:
+acf(whisk_ts)
+```
+
+trend: none
+
+seasonality: peaks at start of year (sometimes)
+
+randomness: some
+
+stationarity: yes
+
+
+
+```{r fig=TRUE}
+sheftempq<-scan(paste(dir,"Sheftemq.txt",
+                        sep=""))
+
+shef_ts<-ts(sheftempq,start=c(1963,1),
+            end=c(1978,4),frequency=4)
+
+ts.plot(shef_ts,ylab="temp.",
+        xlab="quarter",type="b")
+
+## Fourier seasonal model:
+x<-matrix(c(1,1,0,1),1)
+#x<-matrix(c(1,0,0,0),1)
+#x<-matrix(c(1,1,1,1),1)
+#x<-matrix(c(1,0,0,1),1)
+
+F0<-matrix(c(1))
+F1<-matrix(c(0,-1,1,0),2,2)
+F2<-matrix(c(-1),1)
+F<-bdiag(F0,F1,F2)
+beta0<-c(0,0,0,0)
+P0<-1000*diag(4)
+mod<-dlm(shef_ts,FF=x,GG=F,
+         V=1,W=100*diag(4),m0=beta0,
+         C0=P0)
+fitshef<-dlmFilter(shef_ts,mod)
+ts.plot(fitshef$f)
+points(shef_ts,pch=20)
+
+Fore<-dlmForecast(fitshef,nAhead=4)
+
+fsd <- sqrt(unlist(Fore$Q))
+pl <- Fore$f + qnorm(0.05, sd = fsd)
+pu <- Fore$f + qnorm(0.95, sd = fsd)
+fc <- list(mean=Fore$f, lower=pl, upper=pu,
+x=shef_ts, level=95)
+plot.forecast(fc, main="Temperature (Forecast)")
+```
+
+trend: none
+
+seasonality: peaks at start of year (sometimes)
+
+randomness: some
+
+stationarity: yes
+
+For question 6, we now do differencing:
+```{r}
+op<-par(mfrow=c(2,2),pty="s")
+plot(diff(shef_ts,lag=1))
+plot(diff(shef_ts,lag=2))
+plot(diff(shef_ts,lag=3))
+plot(diff(shef_ts,lag=4))
+```
+
+```{r}
+acf(diff(shef_ts,lag=1))
+```
+
+# Detrending example
+
+```{r}
+x <- 1:100
+filter(x, rep(1, 3))
+filter(x, rep(1, 3), sides = 1)
+filter(x, rep(1, 3), sides = 1, circular = TRUE)
+
+filter(presidents, rep(1, 3))
+
+
+library(TSA)
+## centered 12 point MA:
+weights <- c(1/24,rep(1/12,11),1/24)
+
+```
+
+# The decompose function
+
+```{r}
+whisk_ts_decomp<-decompose(whisk_ts)
+str(whisk_ts_decomp)
+plot(whisk_ts_decomp$seasonal)
+plot(whisk_ts_decomp$trend)
+plot(whisk_ts_decomp$random)
+```
+
+# ACF
+
+```{r}
+acf(whisk_ts)
+```
+
+# Problem 3
+
+```{r}
+sunsp<-scan(paste(dir,"Sunsp.txt",
+                        sep=""))
+sunsp_ts<-ts(sunsp)
+```
+
+```{r}
+plot(sunsp_ts,type="l")
+fm<-lm(sunsp_ts ~ sin(2*pi*1:77/10.2)+cos(2*pi*1:77/10.2))
+fitted_fm<-fitted(fm)
+plot(1:77,sunsp_ts,type="l")
+lines(1:77,fitted_fm,lty=2)
+```
+
+# Problem 7
+
+```{r}
+a<-0
+b<-0.05
+omega<-2*pi/30
+t<-1:100
+y<-a+b*t
+plot(t,y)
+
+lag.plot(y,lags=8)
+
+y<-sin(omega*t)
+
+for(i in 1:20){
+lag.plot(y,set.lags=i:i)
+Sys.sleep(1)
+}
+```
+
+# Problem 16
+
+```{r}
+art1<-read.table(paste(dir,"art1.txt",sep=""))
+art2<-read.table(paste(dir,"art2.txt",sep=""))
+art1<-ts(art1)
+art2<-ts(art2)
+
+plot.ts(art1)
+## stationary:
+plot.ts(diff(art1,lag=1))
+x1<-diff(art1,lag=1)
+
+## trend:
+plot.ts(art2)
+## stationary:
+plot.ts(diff(art2))
+x2<-diff(art2,lag=1)
+
+##MA2
+acf(art1)
+
+acf(x1)
+## AR(1)
+acf(x1,type="partial")
+
+acf(art2)
+acf(x2)
+## AR1
+acf(x2,type="partial")
+
+m100<-arima(x1,order=c(1,0,0))
+m101<-arima(x1,order=c(1,0,1))
+m100
+## slightly better:
+m101
+library(car)
+qqPlot(residuals(m101))
+
+m100_2<-arima(x2,order=c(1,0,0))
+m101_2<-arima(x2,order=c(1,0,1))
+qqPlot(residuals(m101_2))
+
+library(forecast)
+auto.arima(x1)
+
+auto.arima(x2)
+```
+
+Both seem to be ARMA(1,1).
+
+
+# Practicalities p 55
+
+```{r}
+y<-arima.sim(100,model=list(ar=0.5,ma=0.4))
+plot(y)
+fit<-arima(y,order=c(1,0,1))
+fit
+
+y<-arima.sim(100,model=list(ar=0.9,order=c(1,0,0)))+50
+plot(y)
+fit<-arima(y,order=c(1,0,0))
+
+y<-arima.sim(n=300,
+             model=list(ar=0.7,
+                        order=c(1,1,0)))
+ts.plot(y)
+acf(y)
+fit<-arima(y,order=c(1,0,0))
+
+x<-diff(y,lag=1)
+ts.plot(x)
+acf(x)
+acf(x,type="partial")
+
+fit1<-arima(x,order=c(1,0,0))
+fit1a<-arima(y,order=c(1,1,0))
+
+y<-read.table(paste(dir,"ar1sim.txt",sep=""))
+y<-ts(y)
+ts.plot(y)
+acf(y)
+
+x<-diff(y,lag=1)
+ts.plot(x)
+acf(x)
+
+fit1<-arima(x,order=c(1,0,0))
+fit2<-arima(x,order=c(2,0,0))
+fit3<-arima(x,order=c(3,0,0))
+
+fit1$aic
+fit2$aic
+fit3$aic
+
+fit1$loglik
+fit2$loglik
+fit3$loglik
+
+tsdiag(fit1)
+
+pred_fit1<-predict(fit1,n.ahead=10)$pred
+predse_fit1<-predict(fit1,n.ahead=10)$se
+
+ts.plot(x,xlim=c(0,310))
+lines(301:310,pred_fit1)
+lines(301:310,pred_fit1-2*predse_fit1,lty=2)
+lines(301:310,pred_fit1+2*predse_fit1,lty=2)
+
+fit1<-arima(y,order=c(1,0,0),xreg=1:301)
+for1<-predict(fit1,n.ahead=9,newxreg=302:310)
+for1$pred
+lower<-for1$pred-2*for1$se
+upper<-for1$pred+2*for1$se
+
+ts.plot(y,xlim=c(1,310))
+lines(302:310,for1$pred,lty=1)
+lines(302:310,lower,lty=2)
+lines(302:310,upper,lty=2)
+```
+
+# State Space Models
+
+Sheffield historical temperatures example:
+
+```{r}
+dir<-"/Users/shravanvasishth/Dropbox/MScStatistics/2014-2015/MAS6011/Semester2/Data/"
+
+temp<-read.table(paste(dir,"temp.txt",
+                        sep=""))
+temp<-ts(temp[,2],start=1659,
+         frequency=1)
+x<-matrix(1)
+F<-matrix(1)
+sigma2<-1
+Z<-10
+beta0<-9
+P0<-1000
+
+mod<-dlm(temp,
+         FF=x,
+         GG=F,
+         V=sigma2,
+         W=Z,
+         m0=beta0,
+         C0=P0)
+
+fit<-dlmFilter(temp,mod)  
+plot(1:length(fit$f),fit$f,type="l")
+
+## this is the *negative* of log lik:
+(modLL<-dlmLL(y=temp,mod=mod))
+## so loglik
+-modLL
+```
+
+Next, we estimate $\sigma^2$ and $Z$ using MLE:
+
+```{r}
+build<-function(parm){
+  sigma2<-parm[1]
+  Z<-parm[2]
+  return(list(FF=x,GG=F,V=sigma2,W=Z,
+              m0=beta0,C0=P0))
+}
+
+maxlikest<-dlmMLE(y=temp,
+                  parm=c(3,2),
+                  build=build,
+                  lower=c(1e-6,0))
+sigma2<-maxlikest$par[1]
+Z<-maxlikest$par[2]
+```
+
+
+```{r}
+## refit model with MLEs for sigma2 and Z:
+mod2<-dlm(temp,
+         FF=x,
+         GG=F,
+         V=sigma2,
+         W=Z,
+         m0=beta0,
+         C0=P0)
+fit2<-dlmFilter(temp,mod2)
+(mod2LL<-dlmLL(y=temp,mod=mod2))
+## higher than -modLL
+-mod2LL
+```
+
+```{r}
+plot(1:length(fit$f),fit$f,type="l",
+     main="Comparing MLE with non-MLE ests.",
+     ylim=c(6.5,11))
+lines(1:length(fit2$f),fit2$f,lty=1,col="red")
+points(1:length(temp),temp)
+```
+
+```{r}
+dlmForecast(mod=mod,nAhead=3)
+dlmForecast(mod=mod2,nAhead=3)
+```
+
+
+
+```{r}
+library(gplots)
+## predicted values of the levels:
+pred<-ts(fit$f,start=1659,frequency=1)
+ts.plot(pred,ylim=c(min(pred,temp),max(pred,temp)),
+        lty=2,lwd=4,main="Annual central England temps",col="gray")
+points(temp,pch=20)
+#lines(temp,col="red")
+points(pred,pch=4,col="red")
+```
+
+Using ggfortify:
+
+```{r}
+library(ggplot2)
+library(ggfortify)
+filtered <- dlmFilter(temp,mod)
+autoplot(filtered)
+smoothed<-dlmSmooth(filtered)
+autoplot(smoothed)
+p<-autoplot(filtered)
+autoplot(smoothed,
+         ts.colour='blue',
+         p=p)
+```
+
+```{r}
+## forecast variance q:
+Ptt1 <- unlist(dlmSvd2var(fit$U.R,fit$D.R))
+q<-Ptt1+sigma2
+
+Ptt<-Ptt1
+
+k<-Ptt1*1/q
+
+Ptt<-Ptt1-q*k^2
+```
+
+
+Linear growth model (ch 6)
+
+```{r}
+alum<-read.table(paste(dir,
+                       "alum.txt",sep=""))
+
+alum_ts<-ts(alum[,2],start=1,end=210,
+            frequency=1)
+ts.plot(alum_ts,type="l")
+
+x<-matrix(c(1,0),1,2)
+F<-matrix(c(1,0,1,1),2,2)
+Z<-matrix(c(10,0,0,2),2,2)
+beta0<-c(1800,1)
+P0<-1000*diag(2)
+mod<-dlm(alum,
+         FF=x,
+         GG=F,
+         V=1,
+         W=Z,
+         m0=beta0,
+         C0=P0)
+
+fit_alum<-dlmFilter(alum_ts,mod)
+
+ts.plot(fit_alum$f,lty=2)
+points(alum_ts,pch=2)
+points(fit_alum$f,pch=20)
+```
+
+Forecast function:
+```{r}
+##posterior mean vector:
+fit_alum$m[211,]
+x<-1989.08+1:10*17.10
+## linear growth:
+plot(x)
+```
+
+
+
+Turkey data:
+
+```{r}
+turkey<-scan(paste(dir,"turkey.txt",sep=""))
+turkey<-ts(turkey,start=c(1974,4),frequency=4)
+ts.plot(turkey)
+x<-matrix(c(1,0,1,0,1),1)
+F1<-matrix(c(1,0,1,1),2,2)
+F2<-matrix(c(0,-1,1,0),2,2)
+F3<-matrix(c(-1),1,1)  
+F<-bdiag(F1,F2,F3)
+mod<-dlm(FF=x,V=10,GG=F,W=100*diag(5),
+         m0=rep(0,5),C0=1000*diag(5))
+## fit model using Kalman filter:
+fit<-dlmFilter(turkey,mod)
+## fit model by smoothing:
+fit_s<-dlmSmooth(turkey,mod)
+R <- dlmSvd2var(fit$U.R,fit$D.R)
+q<-rep(0,35)
+for(i in 1:35){
+  q[i]<-x%*%R[[i]]%*%t(x)+1 
+}
+a<-0.05
+L<-fit$f-qnorm(1-a/2)*sqrt(q)
+U<-fit$f+qnorm(1-a/2)*sqrt(q)
+ts.plot(fit$f,fit_s$s[1:35],L,U)
+points(turkey,pch=20)
+points(fit$f,pch=4)
+```
+
+
+# An approach using the \texttt{forecast} library
+
+```{r}
+## no. of rows:
+n <- 3650
+## frequency:
+m <- 365
+
+## define fourier function to generate dummy coding
+## for regressors:
+fourier <- function(t,terms,period)
+{
+  n <- length(t)
+  X <- matrix(,nrow=n,ncol=2*terms)
+  for(i in 1:terms)
+  {
+    X[,2*i-1] <- sin(2*pi*i*t/period)
+    X[,2*i] <- cos(2*pi*i*t/period)
+  }
+  colnames(X) <- paste(c("S","C"),
+                       rep(1:terms,rep(2,terms)),sep="")
+  return(X)
+}
+
+for(i in 1:4){
+  print(2*i-1);print(2*i)
+  
+}
+
+
+plot(forecast(fit, h=2*m, 
+              xreg=fourier(n+1:(2*m),4,m)))
+
+## Melbourne data:
+dat2<-ts(data[,2],start=c(1,10),f=365)
+
+library(forecast)
+m<-365
+n<-3650
+
+## find best arima:
+fit0 <- auto.arima(dat2, seasonal=FALSE,xreg=fourier(1:n,4,m))
+
+fit <- Arima(dat2, order=c(3,0,1), xreg=fourier(1:n,4,m))
+plot(forecast(fit, h=2*m, xreg=fourier(n+1:(2*m),4,m)))
+```
+
+
+\end{document}
+
+
+
+
+
+
